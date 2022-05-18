@@ -114,8 +114,7 @@ const Login = () => {
                                 color='primary'
                                 style={{
                                     width: 200,
-                                    borderRadius: '10px',
-                                    border: "2px solid #FAEBCD"
+                                    borderRadius: '10px'
                                 }}>
                                     Login
                                 </Button>

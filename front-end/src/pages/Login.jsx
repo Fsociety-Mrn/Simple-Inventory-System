@@ -1,17 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // Components
 import {
     Grid,
     Avatar,
-    TextField, 
     Typography,
-    Fab,
     Button
 } from '@mui/material';
 
 import { Custom_Textfield } from '../components/Textfield'
-import { Custom_Button } from '../components/Button'
 
 // Images or Logo
 import image from '../images/fosciety.jpg'
@@ -21,11 +18,26 @@ import image from '../images/fosciety.jpg'
 
 const Login = () => {
 // Initialize Variables
+const [Login_details, setLogin_details] = useState({
+    "username" : "",
+    "password" : ""
+})
 
 // Initialize Functions
 
+const username_change = e => {
+// for username change
+    setLogin_details({...Login_details, username: e.target.value})
+}
+const password_change = e => {
+// for password change
+    setLogin_details({...Login_details, password: e.target.value})
+}
 
-
+const Login_onClick = e =>{
+    e.preventDefault()
+    console.log(Login_details)
+}
 
   return (
     <div>
@@ -74,6 +86,7 @@ const Login = () => {
                         <Typography variant='h6' fontFamily='initial' color="#434343">
                             Evil Corporation
                         </Typography>
+
                     </Grid>
 
 
@@ -88,7 +101,10 @@ const Login = () => {
                             type='text' 
                             label='Username' 
                             margin = 'normal' 
-                            fontFamily='initial'/>
+                            fontFamily='initial'
+                            value={Login_details.username}
+                            onChange ={username_change}
+                            />
 
                             {/* Password */}
                             <Custom_Textfield 
@@ -96,7 +112,10 @@ const Login = () => {
                             fullWidth 
                             type='password' 
                             label='Password' 
-                            margin = 'normal'/>
+                            margin = 'normal'
+                            value={Login_details.password}
+                            onChange ={password_change}
+                            />
 
                         {/* Container Login */}
                             <Grid
@@ -115,7 +134,8 @@ const Login = () => {
                                 style={{
                                     width: 200,
                                     borderRadius: '10px'
-                                }}>
+                                }}
+                                onClick ={Login_onClick}>
                                     Login
                                 </Button>
                             </Grid>

@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 
 
 export const Custom_Textfield = styled(TextField)({
+  backgroundColor: "#FAEBCD",
+  borderRadius: 4,
   "& label.Mui-focused": {
     color: "#434343",
   },

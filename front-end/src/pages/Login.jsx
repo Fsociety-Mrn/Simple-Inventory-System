@@ -5,11 +5,13 @@ import {
     Grid,
     Avatar,
     TextField, 
-    Typography
+    Typography,
+    Fab,
+    Button
 } from '@mui/material';
 
 import { Custom_Textfield } from '../components/Textfield'
-
+import { Custom_Button } from '../components/Button'
 
 // Images or Logo
 import image from '../images/fosciety.jpg'
@@ -34,7 +36,6 @@ const Login = () => {
         direction="row"
         justifyContent="center"
         alignItems="center"
-
         >
 
 {/* Inner Grid */}
@@ -69,10 +70,12 @@ const Login = () => {
 
                     </Grid>
 {/* Titile */}
-                    <Grid item></Grid>
-                    <Typography variant='h6' fontFamily='initial'>
-                            Evil Corp
+                    <Grid item xl={12}>
+                        <Typography variant='h6' fontFamily='initial' color="#434343">
+                            Evil Corporation
                         </Typography>
+                    </Grid>
+
 
 {/* Textfield container */}
                     <Grid item xl={12} >
@@ -94,6 +97,31 @@ const Login = () => {
                             type='password' 
                             label='Password' 
                             margin = 'normal'/>
+
+                        {/* Container Login */}
+                            <Grid
+                            container
+                            direction="column"
+                            justifyContent="center"
+                            alignItems="center">
+
+                                <Typography margin={2}>
+                                    forgot password
+                                </Typography>
+
+                                <Button 
+                                variant='contained' 
+                                color='primary'
+                                style={{
+                                    width: 200,
+                                    borderRadius: '10px',
+                                    border: "2px solid #FAEBCD"
+                                }}>
+                                    Login
+                                </Button>
+                            </Grid>
+
+
                         </form>
 
                     </Grid>

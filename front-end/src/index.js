@@ -8,7 +8,7 @@ const theme = createTheme({
       main: '#434343',
     },
     secondary: {
-      main: '#000000',
+      main: '#FAEBCD',
     },
     text:{
       disabled: '#000000'

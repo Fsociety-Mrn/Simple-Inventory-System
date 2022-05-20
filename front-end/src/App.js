@@ -34,6 +34,7 @@ function App() {
 {/* my Apbbar */}
         <Route element={<App_sidebar/>} >
           <Route path="MERN-stack/Homepage" element={<Overview/>}/>
+          <Route path="*" element={<Navigate to="MERN-stack/Homepage"/>}/>
         </Route>
 
       </Routes>

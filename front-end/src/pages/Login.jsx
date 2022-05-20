@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Components
 import {  
@@ -6,11 +7,13 @@ import {
   Button, 
   Divider, 
   Grid,  
-  Typography 
+  Typography,
+  Link
 } from '@mui/material'
-import { deepOrange } from '@mui/material/colors';
 import { Custom_Textfield } from '../components/Textfield'
 
+// Images or Icons
+import Bing from '../images/Bing.jpg'
 
 const Test = () => {
 
@@ -19,6 +22,9 @@ const [Login_details, setLogin_details] = useState({
   "username" : "",
   "password" : ""
 })
+
+// Navigation
+let navigate = useNavigate();
 
 // Initialize Functions
 
@@ -32,8 +38,10 @@ const password_change = e => {
 }
 
 const Login_onClick = e =>{
+// Login Button
   e.preventDefault()
   console.log(Login_details)
+  navigate("Homepage")
 }
 
 
@@ -60,10 +68,10 @@ const Login_onClick = e =>{
           >
             <Grid item>
               <Avatar
-              alt="Ecorp"
-              // src={image}
-              sx={{ width: 150, height: 150, bgColor: deepOrange[500] }}
-              >E</Avatar>
+              alt="Chandler Bing"
+              src={Bing}
+              sx={{ width: 150, height: 150 }}
+              />
             </Grid>
 
 {/* Title */}
@@ -74,7 +82,7 @@ const Login_onClick = e =>{
               justifyContent="center"
               alignItems="center"
               >
-                <Typography variant='h6' fontFamily='initial' color="#434343">
+                <Typography variant='h5' fontFamily='initial' color="#434343">
                   'Title of your website'
                 </Typography>
 
@@ -116,9 +124,9 @@ const Login_onClick = e =>{
 
 {/* forgot password */}
                 <Divider>
-                  <a href='https://youtu.be/dQw4w9WgXcQ'>
-                    Forgot Password
-                  </a>
+                  <Link href="https://youtu.be/dQw4w9WgXcQ" variant='subtitle1' color="primary">
+                      Forgot Password
+                  </Link>
                 </Divider>
                 <br/>
 

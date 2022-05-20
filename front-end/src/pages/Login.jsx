@@ -56,6 +56,7 @@ const Login_onClick = e =>{
             borderRadius: 3
           }}
             padding={2}
+            spacing={1}
           >
             <Grid item>
               <Avatar
@@ -66,12 +67,21 @@ const Login_onClick = e =>{
             </Grid>
 
 {/* Title */}
-            <Grid item            
+            <Grid item >
+              <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
               >
-              <Typography variant='h6' fontFamily='initial' color="#434343">
-                Log in to 'Title of your website'
-              </Typography>
+                <Typography variant='h6' fontFamily='initial' color="#434343">
+                  'Title of your website'
+                </Typography>
 
+                <Typography variant='h6' fontFamily='initial' color="#434343">
+                  Log in
+                </Typography>
+              </Grid>
             </Grid>
 
 {/* Login details */}

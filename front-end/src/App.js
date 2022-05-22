@@ -8,6 +8,9 @@ import {
   Navigate
 } from "react-router-dom";
 import Appbar from './components/Appbar';
+import { AuthProvider } from './AuthenticationCRUD/Authentication'
+import { Privateroute } from './AuthenticationCRUD/Privateroute';
+import { NotPrivateroute } from './AuthenticationCRUD/NotAprivate'
 
 
 
@@ -24,23 +27,33 @@ function App() {
   }
   
   return (
+<AuthProvider>
     <div>
-  
+
       <Routes>
    
-        <Route path="MERN-stack" element={<Login/>}/>
-        <Route path="*" element={<Navigate to="MERN-stack"/>}/>
+        <Route path="/Login" element={
+          <NotPrivateroute>
+            <Login/>
+          </NotPrivateroute>
+        }/>
+        <Route path="*" element={<Navigate to="/Login"/>}/>
 
 {/* my Apbbar */}
-        <Route element={<App_sidebar/>} >
-          <Route path="MERN-stack/Homepage" element={<Overview/>}/>
-          <Route path="*" element={<Navigate to="MERN-stack/Homepage"/>}/>
+        <Route element={
+          <Privateroute>
+            <App_sidebar/>
+          </Privateroute>
+        } >
+          <Route path="/Homepage" element={<Overview/>}/>
+          <Route path="*" element={<Navigate to="/Homepage"/>}/>
         </Route>
 
       </Routes>
 
 
     </div>
+</AuthProvider>
   );
 }
 

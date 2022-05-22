@@ -28,6 +28,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
 
+import { logout } from '../AuthenticationCRUD/firebase'
 
 const drawerWidth = 240;
 // Custom Appbar
@@ -83,7 +84,8 @@ const closeMenu = () => {
 const Logout = () => {
   // Logout
     setAnchorEl(null)
-    navigate("/")
+    logout()
+    //navigate("/")
   }
 
 

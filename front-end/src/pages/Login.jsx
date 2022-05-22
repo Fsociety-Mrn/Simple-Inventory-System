@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+// Authentication
+import { login , useAuth } from '../AuthenticationCRUD/firebase'
 
 // Components
 import {  
@@ -18,13 +21,15 @@ import Bing from '../images/Bing.jpg'
 const Test = () => {
 
 // Initialize Variables
-const [Login_details, setLogin_details] = useState({
-  "username" : "",
-  "password" : ""
-})
+const [Login_details, setLogin_details] = useState({"username" : "","password" : ""}) //Login credentials
+const currentUser = useAuth() // current user
+let navigate = useNavigate(); // Navigation
+const location = useLocation() // Location
+const redirectPath = location.state?.path || '/' //redirect path
 
-// Navigation
-let navigate = useNavigate();
+
+
+
 
 // Initialize Functions
 
@@ -37,11 +42,19 @@ const password_change = e => {
   setLogin_details({...Login_details, password: e.target.value})
 }
 
-const Login_onClick = e =>{
+async function Login_onClick(e){
 // Login Button
   e.preventDefault()
-  console.log(Login_details)
-  navigate("Homepage")
+  try {
+    await login(Login_details.username, Login_details.password);
+    // console.log(currentUser)
+    navigate("/Homepage", { replace: true })
+  } catch(err) {
+    console.error(err)
+    console.log("mali")
+  }
+  // console.log(Login_details)
+  // navigate("Homepage")
 }
 
 

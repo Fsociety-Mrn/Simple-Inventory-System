@@ -45,6 +45,6 @@ export function useAuth() {
 
   export function ForgotPassword(email) {
     return sendPasswordResetEmail(auth, email, {
-      url: `http://localhost:3000/Login`,
+      url: `https://mern-stack-7cc72.web.app/Login`,
     })
   }

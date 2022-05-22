@@ -6,7 +6,7 @@ import {  AuthContext } from '../AuthenticationCRUD/Authentication'
 export const NotPrivateroute = ({ children}) => {
     const { currentUser } = useContext(AuthContext)
     const location = useLocation()
-    console.log(currentUser)
+    // console.log(currentUser)
     return currentUser ? 
     <Navigate to='/Homepage' state ={{ path: location.pathname }} /> : children
  

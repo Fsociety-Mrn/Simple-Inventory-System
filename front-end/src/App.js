@@ -11,12 +11,13 @@ import Appbar from './components/Appbar';
 import { AuthProvider } from './AuthenticationCRUD/Authentication'
 import { Privateroute } from './AuthenticationCRUD/Privateroute';
 import { NotPrivateroute } from './AuthenticationCRUD/NotAprivate'
+import { useAuth } from './AuthenticationCRUD/firebase'
 
 
 
 
 function App() {
-
+  const authens = useAuth()
   const App_sidebar = () => {
   return(
     <>
@@ -25,28 +26,24 @@ function App() {
     </>
     )
   }
-  
+
   return (
 <AuthProvider>
     <div>
 
       <Routes>
    
-        <Route path="/Login" element={
-          <NotPrivateroute>
-            <Login/>
-          </NotPrivateroute>
-        }/>
+        <Route path="/Login" element={<Login/>}/>
         <Route path="*" element={<Navigate to="/Login"/>}/>
 
 {/* my Apbbar */}
-        <Route element={
+        <Route  element={
           <Privateroute>
             <App_sidebar/>
           </Privateroute>
         } >
           <Route path="/Homepage" element={<Overview/>}/>
-          <Route path="*" element={<Navigate to="/Homepage"/>}/>
+          {/* <Route path="*" element={<Navigate to="/Homepage"/>}/> */}
         </Route>
 
       </Routes>

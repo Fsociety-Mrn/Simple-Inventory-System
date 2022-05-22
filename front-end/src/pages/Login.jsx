@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 // Authentication
 import { login , useAuth } from '../AuthenticationCRUD/firebase'
 
+
 // Components
 import {  
   Avatar, 
@@ -65,7 +66,9 @@ async function Login_onClick(e){
       direction="column"
       justifyContent="center"
       alignItems="center"
-      padding={2}
+      paddingLeft={3}
+      paddingRight={2}
+      paddingY={2}
       >
         <Grid container 
           direction="column"
@@ -76,6 +79,7 @@ async function Login_onClick(e){
             border: "3px solid #434343",
             borderRadius: 3
           }}
+
             padding={2}
             spacing={1}
           >
@@ -153,6 +157,7 @@ async function Login_onClick(e){
                     borderRadius: '10px'
                   }}
                   onClick ={Login_onClick}> Login</Button>
+
                 </Grid>
 
 {/* Login via  Google */}

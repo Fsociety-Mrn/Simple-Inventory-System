@@ -142,7 +142,7 @@ const drawerWidth = 240;
 
           {/* Add order */}       
           <ListItemButton>
-            <ListItemIcon> \
+            <ListItemIcon> 
               <PersonAddAltIcon fontSize="medium" />
             </ListItemIcon>
             <ListItemText> Add order</ListItemText>

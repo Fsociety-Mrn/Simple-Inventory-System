@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import {  useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 // Authentication
-import { login } from '../AuthenticationCRUD/firebase'
+import { ForgotPassword } from '../AuthenticationCRUD/firebase'
 
 
 // Components
@@ -12,7 +12,7 @@ import {
   Divider, 
   Grid,  
   Typography,
-
+  Link,
   Collapse,
   Alert,
   Snackbar,
@@ -22,16 +22,14 @@ import { Custom_Textfield } from '../components/Textfield'
 
 // Images or Icons
 import Bing from '../images/Bing.jpg'
-import { Link } from "react-router-dom";
 
-
-const Test = () => {
+const SendEmail = () => {
 
 // Initialize Variables
-const [Login_details, setLogin_details] = useState({"username" : "","password" : ""}) //Login credentials
+const [Login_details, setLogin_details] = useState("") //Email credentials
 let navigate = useNavigate(); // Navigation
 const [error,setError] = useState(false) // Error
-
+const [sucess,setSucess] = useState(false) // True
 
 
 
@@ -41,36 +39,56 @@ const [error,setError] = useState(false) // Error
 
 const username_change = e => {
 // for username change
-  setLogin_details({...Login_details, username: e.target.value})
+  setLogin_details(e.target.value)
 }
-const password_change = e => {
-// for password change
-  setLogin_details({...Login_details, password: e.target.value})
-}
+
 
 async function Login_onClick(e){
 // Login Button
   e.preventDefault()
+//   forgotPassword()
   try {
-    await login(Login_details.username, Login_details.password);
-    navigate("/Homepage", { replace: true })
+
+    await ForgotPassword(Login_details);
+    // navigate("/Homepage", { replace: true })
     setError(false)
+    setSucess(true)
   } catch(err) {
     console.error(err)
     setError(true)
+    setSucess(false)
   }
 
+}
+
+const cancel = e => {
+    e.preventDefault()
+    navigate("/Login")
 }
 
 // error message close
 const handleClose = () => {
   setError(false)
 }
+// error message close
+const handleSuccessClose = () => {
+    setSucess(false)
+  }
 
 
 
   return (
     <div>
+{/* Sucess Message */}
+    <Snackbar 
+    open={sucess}  
+    anchorOrigin={{ vertical: "top", horizontal: "left" }} 
+    onClose={handleSuccessClose} >
+      <Alert severity="success" variant='filled' onClose={handleSuccessClose} sx={{ width: '100%' }}>
+        <AlertTitle>Email successfully send!</AlertTitle>
+        Please check your email inbox or just go to the spam folder
+      </Alert>
+    </Snackbar>    
     
 {/* Error Message */}
     <Snackbar 
@@ -78,8 +96,8 @@ const handleClose = () => {
     anchorOrigin={{ vertical: "top", horizontal: "left" }} 
     onClose={handleClose} >
       <Alert severity="error" variant='filled' onClose={handleClose} sx={{ width: '100%' }}>
-        <AlertTitle>Unable to login</AlertTitle>
-        Please check your email and password
+        <AlertTitle>Email not found</AlertTitle>
+        Please input valid email address
       </Alert>
     </Snackbar>
 
@@ -106,29 +124,45 @@ const handleClose = () => {
             spacing={1}
           >
        
-            <Grid item>
+            {/* <Grid item>
               <Avatar
               alt="Chandler Bing"
               src={Bing}
-              sx={{ width: 150, height: 150 }}
+              sx={{ width: 100, height: 100 }}
               />
-            </Grid>
+            </Grid> */}
 
 {/* Title */}
-            <Grid item >
+            <Grid item md={12}>
               <Grid
               container
-              direction="column"
+              direction="row"
               justifyContent="center"
               alignItems="center"
+              spacing={2}
               >
-                <Typography variant='h5' fontFamily='initial' color="#434343">
-                  'Title of your website'
-                </Typography>
+                <Grid item sm={5}>
+                    <Avatar
+                    alt="Chandler Bing"
+                    src={Bing}
+                    sx={{ width: 100, height: 100 }}
+                    />
+                </Grid>
+
+                <Grid item sm={7}>
+                    <Typography variant='h6' fontFamily='initial' color="#434343" >
+                    'Title of your website'
+                    </Typography>
+                </Grid>
+
               </Grid>
             </Grid>
 
-{/* Login details */}
+            <Divider>
+                
+            </Divider>
+
+
             <Grid item>
               <form >
 
@@ -137,37 +171,13 @@ const handleClose = () => {
                 fullWidth 
                 required
                 type='email' 
-                label='Email' 
+                placeholder='Input your email address' 
                 margin = 'normal' 
                 fontFamily='initial'
                 value={Login_details.username}
                 onChange ={username_change}
                 error={error}
                 />
-
-{/* Password */}
-                <Custom_Textfield 
-                required
-                fullWidth 
-                type='password' 
-                label='Password' 
-                margin = 'normal'
-                value={Login_details.password}
-                onChange ={password_change}
-                error={error}
-                />
-
-                <br/>
-                <br/>
-
-{/* forgot password */}
-                <Divider>
-                  <Link to="/Sendemail" variant='subtitle1' color="primary">
-                    {/* <Link */}
-                      Forgot Password
-                  </Link>
-                </Divider>
-                <br/>
 
 {/* Login Button */}
                 <Grid paddingY={2}>
@@ -178,10 +188,26 @@ const handleClose = () => {
                   style={{
                     borderRadius: '10px'
                   }}
-                  onClick ={Login_onClick}> Login</Button>
+                  onClick ={Login_onClick}> send email</Button>
 
                 </Grid>
 
+                <Divider>
+                or
+                </Divider>
+
+{/* Cancel Button */}
+                <Grid paddingY={2}>
+                  <Button  
+                  fullWidth 
+                  variant='contained'                                 
+                  color='primary'
+                  style={{
+                    borderRadius: '10px'
+                  }}
+                  onClick ={cancel}> Go back to Login page</Button>
+
+                </Grid>
               </form>
             </Grid>
           </Grid>
@@ -191,4 +217,4 @@ const handleClose = () => {
   )
 }
 
-export default Test
+export default SendEmail

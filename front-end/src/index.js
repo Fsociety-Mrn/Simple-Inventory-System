@@ -16,6 +16,9 @@ const theme = createTheme({
     },
     text:{
       disabled: '#000000',
+    },
+    error:{
+      main: '#890F0D',
     }
   },
 });

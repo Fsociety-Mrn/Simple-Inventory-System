@@ -1,5 +1,6 @@
 import Login from './pages/Login'
-import Overview from './pages/Overview'
+import SendEmail from './pages/SendEmail'
+import Overview from './pages/Mainpages/Overview'
 import './App.css';
 import {
   Routes,
@@ -10,7 +11,6 @@ import {
 import Appbar from './components/Appbar';
 import { AuthProvider } from './AuthenticationCRUD/Authentication'
 import { Privateroute } from './AuthenticationCRUD/Privateroute';
-import { NotPrivateroute } from './AuthenticationCRUD/NotAprivate'
 import { useAuth } from './AuthenticationCRUD/firebase'
 
 
@@ -34,6 +34,7 @@ function App() {
       <Routes>
    
         <Route path="/Login" element={<Login/>}/>
+        <Route path="/Sendemail" element={<SendEmail/>}/>
         <Route path="*" element={<Navigate to="/Login"/>}/>
 
 {/* my Apbbar */}

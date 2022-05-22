@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth , signInWithEmailAndPassword ,signOut , onAuthStateChanged } from "firebase/auth"
+import { getAuth , signInWithEmailAndPassword ,signOut , onAuthStateChanged ,sendPasswordResetEmail } from "firebase/auth"
 import { useEffect, useState } from "react";
 
 // Your web app's Firebase configuration
@@ -18,6 +18,8 @@ const app = initializeApp(firebaseConfig);
 export default app;
 
 const auth = getAuth()
+
+export const auths = getAuth(app)
 
 // Login
 export function login(email, password) {
@@ -41,3 +43,8 @@ export function useAuth() {
     return currentUser;
   }
 
+  export function ForgotPassword(email) {
+    return sendPasswordResetEmail(auth, email, {
+      url: `http://localhost:3000/Login`,
+    })
+  }

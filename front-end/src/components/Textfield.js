@@ -26,7 +26,7 @@ export const Custom_Textfield = styled(TextField)({
     "&.Mui-focused fieldset": {
       borderRadius: 15,
       border: "2px solid #434343"
-    }
+    },
   }
 });
 

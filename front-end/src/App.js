@@ -1,6 +1,7 @@
 import Login from './pages/Login'
 import SendEmail from './pages/SendEmail'
 import Overview from './pages/Mainpages/Overview'
+import AccountSetting from './pages/Mainpages/AccountSettings'
 import './App.css';
 import {
   Routes,
@@ -44,6 +45,7 @@ function App() {
           </Privateroute>
         } >
           <Route path="/Homepage" element={<Overview/>}/>
+          <Route path="/AccountSettings" element={<AccountSetting/>}/>
           {/* <Route path="*" element={<Navigate to="/Homepage"/>}/> */}
         </Route>
 

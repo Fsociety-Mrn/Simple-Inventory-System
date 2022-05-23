@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getAuth , signInWithEmailAndPassword ,signOut , onAuthStateChanged ,sendPasswordResetEmail } from "firebase/auth"
+import { 
+  getAuth , 
+  signInWithEmailAndPassword ,
+  signOut , 
+  onAuthStateChanged ,
+  sendPasswordResetEmail ,
+  EmailAuthProvider,
+  reauthenticateWithCredential
+} from "firebase/auth"
 import { useEffect, useState } from "react";
 
 // Your web app's Firebase configuration
@@ -43,8 +51,31 @@ export function useAuth() {
     return currentUser;
   }
 
+  // forgot Password
   export function ForgotPassword(email) {
     return sendPasswordResetEmail(auth, email, {
       url: `https://mern-stack-7cc72.web.app/Login`,
     })
   }
+
+export const emailCred = (currentPass) =>{
+  EmailAuthProvider.credential(auth.currentUser, currentPass)
+  .then(res=> console.log(res))
+  .catch(err => console.err(err))
+} ;
+
+
+  // Ask signed in user for current password.
+// const currentPass = window.prompt('Please enter current password');
+//const emailCred  = firebase.auth.EmailAuthProvider.credential(
+// firebase.auth().currentUser, currentPass);
+
+// firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
+//     .then(() => {
+//       // User successfully reauthenticated.
+//       const newPass = window.prompt('Please enter new password');
+//       return firebase.auth().currentUser.updatePassword(newPass);
+//     })
+//     .catch(error = > {
+//       // Handle error.
+//     });

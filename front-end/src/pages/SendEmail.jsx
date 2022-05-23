@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // Authentication
 import { ForgotPassword } from '../AuthenticationCRUD/firebase'
@@ -12,8 +12,6 @@ import {
   Divider, 
   Grid,  
   Typography,
-  Link,
-  Collapse,
   Alert,
   Snackbar,
   AlertTitle
@@ -123,14 +121,6 @@ const handleSuccessClose = () => {
             padding={2}
             spacing={1}
           >
-       
-            {/* <Grid item>
-              <Avatar
-              alt="Chandler Bing"
-              src={Bing}
-              sx={{ width: 100, height: 100 }}
-              />
-            </Grid> */}
 
 {/* Title */}
             <Grid item md={12}>

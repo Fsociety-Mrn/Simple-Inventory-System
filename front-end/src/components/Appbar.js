@@ -79,6 +79,7 @@ const openMenu = e => {
 const closeMenu = () => {
 // Close Admin menu
   setAnchorEl(null)
+  navigate("/AccountSettings")
 }
 
 const Logout = () => {

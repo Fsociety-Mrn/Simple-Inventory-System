@@ -1,4 +1,3 @@
-import { useState } from 'react';
 
 // Components
 import { 
@@ -25,15 +24,19 @@ import PendingIcon from '@mui/icons-material/Pending';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DescriptionIcon from '@mui/icons-material/Description';
+import { useNavigate } from 'react-router-dom';
 
 export const Sidebar = ({open}) => {
 
 // Initialize Variables
-const drawerWidth = 240;
-
+const drawerWidth = 240; //for appbar
+let navigate = useNavigate(); //Naviagte
 
 // Initialize Functions
-
+const routeOverview = e =>{
+    e.preventDefault()
+    navigate("/Homepage")
+}
 
   return (
     <div>    
@@ -65,7 +68,7 @@ const drawerWidth = 240;
         spacing={2}
         >
 
-          <Grid item xl={5}>
+          <Grid item md={4}>
             <Avatar
             src={Bing}
             sx={{ width: 60, height: 60 }}>
@@ -74,29 +77,39 @@ const drawerWidth = 240;
           </Grid>
 
 
-          <Grid item xl={5}>
-            <Typography variant='h6' fontFamily='initial' color="#434343" noWrap>
-              'Title of your website'
+          <Grid item md={8}>
+            <Typography variant='h6' fontFamily='initial' color="#434343" noWrap  fontSize={15}>
+              Title of your website
             </Typography>
           </Grid>
+    
+        
+          
+
+
+
+
 
         </Grid>
 
+        
         <Divider/>
 
         <List component='nav'>
 
 {/* Overview */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeOverview}>
             <ListItemIcon> 
               <DashboardIcon fontSize="medium" />
             </ListItemIcon>
             <ListItemText> Overview</ListItemText>
           </ListItemButton>
+          
             
 {/* Products  */}
-          <Grid container padding={2}  >  
+          <Grid padding={2}  > 
             <ListItemText> Products</ListItemText>
+            <Divider/>
           </Grid>
 
           

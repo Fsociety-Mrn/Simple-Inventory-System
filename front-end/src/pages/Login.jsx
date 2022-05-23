@@ -12,8 +12,6 @@ import {
   Divider, 
   Grid,  
   Typography,
-
-  Collapse,
   Alert,
   Snackbar,
   AlertTitle
@@ -70,7 +68,7 @@ const handleClose = () => {
 
 
   return (
-    <div>
+    <  >
     
 {/* Error Message */}
     <Snackbar 
@@ -90,8 +88,11 @@ const handleClose = () => {
       alignItems="center"
       paddingLeft={3}
       paddingRight={2}
-      paddingY={2}
+      style={{ minHeight: "100vh" }}
       >
+        <Grid item>
+
+        
         <Grid container 
           direction="column"
           justifyContent="center"
@@ -185,9 +186,9 @@ const handleClose = () => {
               </form>
             </Grid>
           </Grid>
-
+          </Grid>
       </Grid>
-    </div>
+    </>
   )
 }
 

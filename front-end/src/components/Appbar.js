@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import { user } from '../AuthenticationCRUD/firebase'
 // components
 import { 
     styled, 
@@ -22,7 +22,6 @@ import { Sidebar } from './Sidebar';
 
 // Images or Icons
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import Admin_Avatar from '../images/Joey.jpg'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -55,6 +54,7 @@ const Appbar = () => {
 
 const [open ,setOpen] = useState(false) // sidebar
 const [anchorEl, setAnchorEl] = useState(null); //Admin menu
+const [Admin_Avatar, setAdmin_Avatar] = useState()
 let navigate = useNavigate(); //Naviagte
 
 // Intializing functions
@@ -88,6 +88,12 @@ const Logout = () => {
     logout()
     //navigate("/")
   }
+
+  // Render a avatar picture
+useEffect(()=>{
+  setAdmin_Avatar(user().photoURL)
+
+})
 
 
   return (
@@ -144,14 +150,13 @@ const Logout = () => {
               aria-label="menu"
               sx={{ 
                 mr: 2, 
-                border: "2px solid white", 
                 borderRadius: 20, 
                 height: 45, 
                 width:45,
                 ...(open && { display: 'none' }) }}
                 onClick={openMenu}
               >         
-                <Avatar  alt="Chandler Bing" src={Admin_Avatar} />
+                <Avatar  alt="Chandler Bing" src={Admin_Avatar} sx={{ border: "2px solid white" }} />
               </IconButton>
                 
 {/*Admin Menu List */}

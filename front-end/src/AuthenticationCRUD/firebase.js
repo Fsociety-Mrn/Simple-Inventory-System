@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 import { 
   getAuth , 
@@ -6,9 +7,13 @@ import {
   onAuthStateChanged ,
   sendPasswordResetEmail ,
   EmailAuthProvider,
-  reauthenticateWithCredential
+  reauthenticateWithCredential,
+  updateProfile ,
+  updatePassword 
 } from "firebase/auth"
+import { getDownloadURL, getStorage, ref, uploadBytes  } from "firebase/storage";
 import { useEffect, useState } from "react";
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,10 +27,11 @@ const firebaseConfig = {
   
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const storage = getStorage();
 
 export default app;
 
-const auth = getAuth()
+export const auth = getAuth()
 
 export const auths = getAuth(app)
 
@@ -58,24 +64,74 @@ export function useAuth() {
     })
   }
 
-export const emailCred = (currentPass) =>{
-  EmailAuthProvider.credential(auth.currentUser, currentPass)
-  .then(res=> console.log(res))
-  .catch(err => console.err(err))
-} ;
 
 
-  // Ask signed in user for current password.
-// const currentPass = window.prompt('Please enter current password');
-//const emailCred  = firebase.auth.EmailAuthProvider.credential(
-// firebase.auth().currentUser, currentPass);
+export function user(){
+    return  auth.currentUser
+}
 
-// firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
-//     .then(() => {
-//       // User successfully reauthenticated.
-//       const newPass = window.prompt('Please enter new password');
-//       return firebase.auth().currentUser.updatePassword(newPass);
-//     })
-//     .catch(error = > {
-//       // Handle error.
-//     });
+// Update user profile
+export function ProfileUpdate(displayName) {
+  updateProfile(auth.currentUser, {
+    displayName: displayName 
+  }).then((res) => {
+    // Profile updated!
+    // ...
+    console.log(res)
+  }).catch((error) => {
+    console.log(error)
+    // An error occurred
+    // ...
+  });
+
+}
+
+// Upload photo
+export async function upload(file) {
+
+  try{
+    const fileRef = ref(storage,auth.currentUser.uid + '.png');
+
+    // setLoading(true);
+    
+    const snapshot = await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+  
+    updateProfile(auth.currentUser, {photoURL});
+    
+   // setLoading(false);
+
+
+   alert("Uploaded file!");
+  }catch(err){
+    alert(err)
+  }
+ 
+}
+
+export async function changing_password (currentPass,newPassword,message,setError)  {
+
+  if (newPassword === "") {
+    setError(true)
+    message("Empty password")
+    return
+  }
+  const credential =  EmailAuthProvider.credential(auth.currentUser.email,currentPass,setError)
+    await reauthenticateWithCredential(auth.currentUser, credential)
+    .then((res) => {
+         updatePassword(auth.currentUser, newPassword)
+         .then(() => {
+          setError(false)
+          message("password updated")
+          })
+          .catch((error) => {
+          // An error ocurred
+          // ...
+          setError(true)
+          message(error)
+          });
+    }).catch((error) => {
+      setError(true)
+      message("incorrect password")
+    });
+}

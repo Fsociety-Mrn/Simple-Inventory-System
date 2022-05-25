@@ -1,5 +1,6 @@
-import { Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import React from 'react'
+import { auth } from '../../AuthenticationCRUD/firebase'
 
 const Overview = () => {
   return (
@@ -17,6 +18,10 @@ const Overview = () => {
         <h1>
             Hello Friends
         </h1>
+
+        <Button onClick={()=>console.log(auth)}>
+          click me
+        </Button>
       </Grid>
 
     </div>

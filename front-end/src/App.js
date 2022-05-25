@@ -11,14 +11,26 @@ import {
 } from "react-router-dom";
 import Appbar from './components/Appbar';
 import { AuthProvider } from './AuthenticationCRUD/Authentication'
-import { Privateroute } from './AuthenticationCRUD/Privateroute';
+import { Privateroute , NotPrivateroute} from './AuthenticationCRUD/Privateroute';
 import { useAuth } from './AuthenticationCRUD/firebase'
+import { useState } from 'react';
 
 
 
 
 function App() {
+  const [rout,setRout] = useState()
   const authens = useAuth()
+
+  const Routa = () => {
+
+    if (authens) return(<><Navigate to="/Homepage"/></>)
+    if (!authens)return (<>
+
+    
+    <Outlet /></>)
+    
+  }
   const App_sidebar = () => {
   return(
     <>
@@ -33,10 +45,14 @@ function App() {
     <div>
 
       <Routes>
-   
-        <Route path="/Login" element={<Login/>}/>
-        <Route path="/Sendemail" element={<SendEmail/>}/>
-        <Route path="*" element={<Navigate to="/Login"/>}/>
+
+      {/* <Route element={<Routa/>}> */}
+        <Route path="/Login" element={authens ?<Navigate to="/Homepage"/> : <Login/> }/>
+        <Route path="/Sendemail" element={authens ?<Navigate to="/Homepage"/> : <SendEmail/>}/>
+        <Route path="*" element={authens ?<Navigate to="/Homepage"/> : <Navigate to="/Login"/>}/>
+      {/* </Route>
+         */}
+        
 
 {/* my Apbbar */}
         <Route  element={
@@ -46,7 +62,7 @@ function App() {
         } >
           <Route path="/Homepage" element={<Overview/>}/>
           <Route path="/AccountSettings" element={<AccountSetting/>}/>
-          {/* <Route path="*" element={<Navigate to="/Homepage"/>}/> */}
+          <Route path="*" element={<Navigate to="/Homepage"/>}/>
         </Route>
 
       </Routes>

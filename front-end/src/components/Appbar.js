@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { user } from '../AuthenticationCRUD/firebase'
+import { user , auth } from '../AuthenticationCRUD/firebase'
 // components
 import { 
     styled, 
@@ -79,8 +79,14 @@ const openMenu = e => {
 const closeMenu = () => {
 // Close Admin menu
   setAnchorEl(null)
-  navigate("/AccountSettings")
+
 }
+
+const closeMenu_ = () => {
+  // Navigate
+    setAnchorEl(null)
+    navigate("/AccountSettings")
+  }
 
 const Logout = () => {
   // Logout
@@ -91,7 +97,7 @@ const Logout = () => {
 
   // Render a avatar picture
 useEffect(()=>{
-  setAdmin_Avatar(user().photoURL)
+  setAdmin_Avatar(auth.currentUser.photoURL)
 
 })
 
@@ -169,7 +175,7 @@ useEffect(()=>{
               }}
               >
 {/* Account Settings */}
-                <MenuItem onClick={closeMenu} >
+                <MenuItem onClick={closeMenu_} >
                   <ListItemIcon>
                     <SettingsIcon fontSize="small" />
                   </ListItemIcon>

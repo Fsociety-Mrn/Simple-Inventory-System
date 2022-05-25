@@ -1,5 +1,5 @@
 import { Alert, AlertTitle, Collapse, LinearProgress, Snackbar } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 
 export const LOADING_SNACKBAR = (open) => {
   return (
@@ -51,16 +51,16 @@ export const ERROR_SNACKBAR = (open) => {
   )
 }
 
-export const Alert_success = (open,setOpen,message) => {
-
+export const Alert_success = ({opens = false }) => {
+  const [open,setOpen] = useState(opens)
   return (
     <div>
       <Collapse in={open}>
 
       <Alert onClose={()=>{
         setOpen(false)
-      }} variant='filled' severity="success"  >
-          {message}
+      }} variant='filled' severity="error"  >
+          message
       </Alert>
       </Collapse>
     </div>

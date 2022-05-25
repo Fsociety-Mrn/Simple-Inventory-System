@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom'
 
 // Authentication
-import { login } from '../AuthenticationCRUD/firebase'
+import { login ,  login_remember} from '../AuthenticationCRUD/firebase'
 
 
 // Components
@@ -14,7 +14,11 @@ import {
   Typography,
   Alert,
   Snackbar,
-  AlertTitle
+  AlertTitle,
+  Checkbox,
+  Switch,
+  FormGroup,
+  FormControlLabel
 } from '@mui/material'
 import { Custom_Textfield } from '../components/Textfield'
 
@@ -25,11 +29,12 @@ import { Link } from "react-router-dom";
 
 const Test = () => {
 
+
 // Initialize Variables
 const [Login_details, setLogin_details] = useState({"username" : "","password" : ""}) //Login credentials
 let navigate = useNavigate(); // Navigation
 const [error,setError] = useState(false) // Error
-
+const [remem ,setRember] = useState()
 
 
 
@@ -46,12 +51,20 @@ const password_change = e => {
   setLogin_details({...Login_details, password: e.target.value})
 }
 
+const remember_change = e => {
+// remember me sate
+  setRember(e.target.value)
+  console.log(remem)
+}
+
 async function Login_onClick(e){
 // Login Button
   e.preventDefault()
   try {
-    await login(Login_details.username, Login_details.password);
-    navigate("/Homepage", { replace: true })
+    await remem? 
+    login_remember(Login_details.username, Login_details.password) 
+    : login(Login_details.username, Login_details.password);
+
     setError(false)
   } catch(err) {
     console.error(err)
@@ -158,6 +171,21 @@ const handleClose = () => {
                 error={error}
                 />
 
+                <Grid 
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center">
+
+                </Grid>
+
+{/* remeber me */}
+                <FormGroup value={remem} onChange={remember_change}>
+                  <FormControlLabel value='Remember me' control={<Switch  />} label="Remember me" 
+                  fontFamily='initial'
+                  />
+                </FormGroup>
+
                 <br/>
                 <br/>
 
@@ -180,7 +208,6 @@ const handleClose = () => {
                     borderRadius: '10px'
                   }}
                   onClick ={Login_onClick}> Login</Button>
-
                 </Grid>
 
               </form>

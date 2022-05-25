@@ -107,7 +107,11 @@ const handleSuccessClose = () => {
       paddingLeft={3}
       paddingRight={2}
       paddingY={2}
+      style={{ minHeight: "100vh" }}
       >
+        <Grid item>
+
+
         <Grid container 
           direction="column"
           justifyContent="center"
@@ -154,7 +158,7 @@ const handleSuccessClose = () => {
 
 
             <Grid item>
-              <form >
+              <form onSubmit={()=>{}}>
 
 {/* Email */}
                 <Custom_Textfield 
@@ -172,6 +176,7 @@ const handleSuccessClose = () => {
 {/* Login Button */}
                 <Grid paddingY={2}>
                   <Button  
+                  type='submit'
                   fullWidth 
                   variant='contained'                                 
                   color='primary'
@@ -201,7 +206,7 @@ const handleSuccessClose = () => {
               </form>
             </Grid>
           </Grid>
-
+          </Grid>
       </Grid>
     </div>
   )

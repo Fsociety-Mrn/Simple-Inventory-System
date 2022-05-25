@@ -9,7 +9,10 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateProfile ,
-  updatePassword 
+  updatePassword, 
+  browserSessionPersistence,
+  browserLocalPersistence,
+  setPersistence
 } from "firebase/auth"
 import { getDownloadURL, getStorage, ref, uploadBytes  } from "firebase/storage";
 import { useEffect, useState } from "react";
@@ -36,8 +39,41 @@ export const auth = getAuth()
 export const auths = getAuth(app)
 
 // Login
-export function login(email, password) {
+export async function login(email, password) {
+  await setPersistence(auth,browserSessionPersistence)
+  .then(() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
     return signInWithEmailAndPassword(auth, email, password);
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    console.log(error.message);
+    // const errorMessage = error.message;
+  });
+  // return signInWithEmailAndPassword(auth, email, password);
+}
+
+// Login remember
+export async function login_remember(email, password) {
+  await setPersistence(auth,browserLocalPersistence)
+  .then(() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    return signInWithEmailAndPassword(auth, email, password);
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    console.log(error.message);
+    // const errorMessage = error.message;
+  });
+  // return signInWithEmailAndPassword(auth, email, password);
 }
 
 // Logout
@@ -109,11 +145,12 @@ export async function upload(file) {
  
 }
 
-export async function changing_password (currentPass,newPassword,message,setError)  {
+export async function changing_password (currentPass,newPassword,setMessagge,setError)  {
 
   if (newPassword === "") {
-    setError(true)
-    message("Empty password")
+    setMessagge(true)
+     alert("Empty password")
+    // sessionStorage.setItem("MessageInco", "Empty password")
     return
   }
   const credential =  EmailAuthProvider.credential(auth.currentUser.email,currentPass,setError)
@@ -121,17 +158,17 @@ export async function changing_password (currentPass,newPassword,message,setErro
     .then((res) => {
          updatePassword(auth.currentUser, newPassword)
          .then(() => {
-          setError(false)
-          message("password updated")
+          setError(true)
           })
           .catch((error) => {
           // An error ocurred
           // ...
-          setError(true)
-          message(error)
+          setError(false)
+
           });
     }).catch((error) => {
-      setError(true)
-      message("incorrect password")
+      
+      setMessagge(true)
+      alert("incorrect password")
     });
 }

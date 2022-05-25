@@ -12,6 +12,7 @@ import {
   ERROR_SNACKBAR ,
   Alert_success
 } from '../../components/SnackbarAlert'
+import {Dialoglogout} from '../../components/Dialoglogout'
 
 
 
@@ -42,8 +43,8 @@ const [image,setImage] = useState() //View Image
 const [loading, setLoading] = useState(false); //Loading
 const [IncoPass, setIncoPass] = useState(false); //Incorrect Password
 const [notMatch, setNotMatch] = useState(false); //Password dont macth
-const [message,setMessagge] = useState("test") //Message Incorrect pass
-const [error,setError] = useState(false) //Message Incorrect pass
+const [message,setMessagge] = useState(false) //Message Incorrect pass
+const [error,setError] = useState() //Message Incorrect pass
 // Inititalixe Functions message,setError
 
 
@@ -80,7 +81,7 @@ const onSubmit_oldpass = e => {
   {
     setNotMatch(true)
   }else{
-    changing_password(oldPass,newPassword.new_password )
+    changing_password(oldPass,newPassword.new_password , setMessagge, setError)
     setNotMatch(false)
   }
   
@@ -115,7 +116,9 @@ const update_user = e => {
 }
 
 return (
-    <>
+    <div>
+{/* If succesful logout */}
+      <Dialoglogout open={error}/> 
       <Grid       
       container
       direction="row"
@@ -219,14 +222,14 @@ return (
             
          
             <Grid item xs={12} md={12} sm={12}>
-
-            {/* const [message,setMessagge] = useState("") //Message Incorrect pass
-const [error,setError] */}
-{/* Success */}
-              <Alert_success open={error} setOpen={setError} message={message} />
+              {/* {console.log(sessionStorage.getItem("Inco_error"))} */}
+              <Alert_success opens={message}/>
               <Typography variant='h6' >
                 Change Password
               </Typography>
+              <Button onClick={()=>console.log(message)}>
+                click me
+              </Button>
             </Grid>
 
             <Grid item xs={12} md={12} sm={12}>
@@ -277,7 +280,7 @@ const [error,setError] */}
 
 
       </Grid>  
-    </>
+    </div>
   )
   
 }

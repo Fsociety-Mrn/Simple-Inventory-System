@@ -33,10 +33,28 @@ const drawerWidth = 240; //for appbar
 let navigate = useNavigate(); //Naviagte
 
 // Initialize Functions
+
+// Overview
 const routeOverview = e =>{
     e.preventDefault()
     navigate("/Homepage")
 }
+
+
+// ViewProduct
+const routeViewProduct = e =>{
+  e.preventDefault()
+    navigate("/ViewProduct") 
+}
+
+// AddProduct
+const routeAddProduct = e =>{
+  e.preventDefault()
+  navigate("/AddProduct") 
+
+}
+
+
 
   return (
     <div>    
@@ -79,16 +97,10 @@ const routeOverview = e =>{
 
           <Grid item md={8}>
             <Typography variant='h6' fontFamily='initial' color="#434343" noWrap  fontSize={15}>
-              Title of your website
+              LA Clothing
             </Typography>
           </Grid>
     
-        
-          
-
-
-
-
 
         </Grid>
 
@@ -114,7 +126,7 @@ const routeOverview = e =>{
 
           
           {/* View Products */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeViewProduct} >
             <ListItemIcon> 
               <ShoppingCartIcon fontSize="medium" />
             </ListItemIcon>
@@ -122,7 +134,7 @@ const routeOverview = e =>{
           </ListItemButton>
 
           {/* Add Products */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeAddProduct}>
             <ListItemIcon> 
               <AddIcon fontSize="medium" />
             </ListItemIcon>

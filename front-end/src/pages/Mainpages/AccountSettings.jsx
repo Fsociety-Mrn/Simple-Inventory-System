@@ -1,5 +1,5 @@
 
-import { Button, Divider, Grid, Tab, Tabs, TextField, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import Changepassword from './Changepassword'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
@@ -27,8 +27,7 @@ const tabChange = (event, newValue) => {
       direction="column"
       justifyContent="center"
       alignItems="flex-start"
-      padding={2}
-      spacing={3}
+      padding={1}
       >
 
 {/* Account Setting */}
@@ -44,13 +43,13 @@ const tabChange = (event, newValue) => {
           <TabContext value={tabvalue}>
             <Box sx={{ borderBottom: 2, borderColor: 'divider'}}>
               <TabList onChange={tabChange}>
-                <Tab label="Account setting" value='0' />
-                <Tab label="Add User" value='1' />
+                {/* <Tab  value='0' /> */}
+                {/* <Tab label="Add User" value='1' /> */}
               </TabList>
 
             </Box>
             <TabPanel value="0">{<Changepassword/>}</TabPanel>
-            <TabPanel value="1">Item Two</TabPanel>
+            {/* <TabPanel value="1">{<Adduser/>}</TabPanel> */}
 
           </TabContext>
 

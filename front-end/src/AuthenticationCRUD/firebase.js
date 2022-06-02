@@ -15,6 +15,7 @@ import {
   setPersistence
 } from "firebase/auth"
 import { getDownloadURL, getStorage, ref, uploadBytes  } from "firebase/storage";
+import { getFirestore ,collection } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 
 
@@ -39,7 +40,7 @@ export const auth = getAuth()
 export const auths = getAuth(app)
 
 // Login
-export async function login(email, password) {
+export async function login(email, password,setError) {
   await setPersistence(auth,browserSessionPersistence)
   .then(() => {
     // Existing and future Auth states are now persisted in the current
@@ -57,24 +58,12 @@ export async function login(email, password) {
   // return signInWithEmailAndPassword(auth, email, password);
 }
 
-// Login remember
-export async function login_remember(email, password) {
-  await setPersistence(auth,browserLocalPersistence)
-  .then(() => {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
-    // ...
-    // New sign-in will be persisted with session persistence.
-    return signInWithEmailAndPassword(auth, email, password);
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    console.log(error.message);
-    // const errorMessage = error.message;
-  });
-  // return signInWithEmailAndPassword(auth, email, password);
-}
+// // Login remember
+// export function login_remember(email, password) {
+//    setPersistence(auth,browserLocalPersistence)
+//   .then(() => {return signInWithEmailAndPassword(auth, email, password);  })
+
+// }
 
 // Logout
 export function logout() {
@@ -172,3 +161,7 @@ export async function changing_password (currentPass,newPassword,setMessagge,set
       alert("incorrect password")
     });
 }
+
+
+// getData
+export const db = getFirestore(app);

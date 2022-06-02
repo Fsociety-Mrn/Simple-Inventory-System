@@ -3,13 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { user , ProfileUpdate , upload ,changing_password } from '../../AuthenticationCRUD/firebase'
 
 // Components
-import { Alert, Avatar,   Button, Fab, Grid, Typography  } from '@mui/material'
+import { Avatar,   Button, Fab, Grid, Typography  } from '@mui/material'
 import {Custom_Textfield} from '../../components/Textfield'
 import { styled } from '@mui/material/styles';
 import { 
-  SUCCESS_SNACKBAR , 
-  LOADING_SNACKBAR , 
-  ERROR_SNACKBAR ,
   Alert_success
 } from '../../components/SnackbarAlert'
 import {Dialoglogout} from '../../components/Dialoglogout'
@@ -124,7 +121,7 @@ return (
       direction="row"
       justifyContent="center"
       alignItems="center"
-      padding={2}
+      // padding={2}
       spacing={2}
       >
 
@@ -179,6 +176,7 @@ return (
                 </label>
               </Grid>                    
             </Grid>
+            
 {/* Add Profile */}
             <Grid item xs={12} md={12} sm={12}>
               <Typography variant='h5'>Name:</Typography>
@@ -216,7 +214,7 @@ return (
             border: "1px solid #434343",
             borderRadius: 20
           }}
-          padding={2}s
+          padding={2}
           spacing={1}
           >
             
@@ -227,9 +225,6 @@ return (
               <Typography variant='h6' >
                 Change Password
               </Typography>
-              <Button onClick={()=>console.log(message)}>
-                click me
-              </Button>
             </Grid>
 
             <Grid item xs={12} md={12} sm={12}>

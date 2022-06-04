@@ -128,6 +128,7 @@ export async function upload(file) {
 
 
    alert("Uploaded file!");
+   return photoURL
   }catch(err){
     alert(err)
   }

@@ -109,7 +109,8 @@ const display_NameChange = e => {
 const update_user = e => {
   e.preventDefault()
   ProfileUpdate(current_user.displayName)
-  if (current_user.photoURL ) upload(current_user.photoURL) 
+  if (current_user.photoURL ) console.log(upload(current_user.photoURL) )
+  
 }
 
 return (

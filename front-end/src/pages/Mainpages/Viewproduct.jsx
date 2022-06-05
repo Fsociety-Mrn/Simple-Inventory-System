@@ -1,38 +1,77 @@
 import React, { useEffect, useState } from 'react'
 import { db } from '../../AuthenticationCRUD/firebase'
+import { useNavigate } from 'react-router-dom';
 import {
     collection,
     getDocs
   } from "firebase/firestore";
-import {  Button, Divider, Grid, IconButton, ImageList, ImageListItem, ImageListItemBar, ListSubheader, TextField, Typography } from '@mui/material';
+import {  
+  Alert, 
+  AlertTitle, 
+  Button, 
+  Divider, 
+  Fab, 
+  Grid, 
+  IconButton, 
+  ImageList, 
+  ImageListItem, 
+  ImageListItemBar, 
+  ListSubheader, 
+  Snackbar, 
+  Typography 
+} from '@mui/material';
 import { Custom_Textfield } from '../../components/Textfield'
 import { category } from './Addproduct'
-
+import {success_added} from './Addproduct'
+import {Custome_button_2} from '../../components/Button'
 
 // ICONS
 import InfoIcon from "@mui/icons-material/Info";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 
 
 const Viewproduct = () => {
 // Initiliaze variables
 
 const [data,setData] = useState([]) //Data
-const usersCollectionRef = collection(db, "Product");
-
-
+// const [data,setData] = useState() //Data
+const usersCollectionRef = collection(db, "Product"); // database
+const [succ,setSucc] = useState(success_added) //success added
+let navigate = useNavigate(); //Naviagte 
+const [filter_data,setFilter_data] = useState('')
 // Initiliaze function
 
+// fetch data
 useEffect(()=>{
-    const getData =  async () => {
-        const Data = await getDocs(usersCollectionRef)
-        // setData(Data.docs?.map(doc=> ({...doc.data(), 
-        //     code: doc.code
-        // })))
-        setData(Data.docs.map(doc=> ({...doc.data(), id: doc.id})))
-    }
-    console.log(data)
-   return getData
+  let a = true
+  if (a){
+    getDocs(usersCollectionRef).then(
+      snapshop=>{
+        setData(
+          snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+        )
+      }
+    )
+
+  }
+ return ()=> a = false
 },[])
+
+// Close success
+const handleClose = () => {
+  setSucc(false)
+}
+
+const addProduct = () => {
+  navigate("/AddProduct")
+}
+
+const filterData = () => {
+   if (filter_data) return data?.filter(e=> e.category === filter_data)
+  return data
+}
+
 
 
 return (
@@ -40,7 +79,18 @@ return (
     <br/>
     <br/>
     <br/>
-    <br/>   
+    <br/>
+{/* Success Message */}
+    <Snackbar 
+    open={succ} autoHideDuration={5000} 
+    anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+    onClose={handleClose} >
+      <Alert severity="success" variant='filled' onClose={handleClose} sx={{ width: '100%' }}>
+        <AlertTitle>Success</AlertTitle>
+        successfully added product
+      </Alert>
+    </Snackbar>    
+
     <Grid
     container
     direction="row"
@@ -60,30 +110,56 @@ return (
       <Grid item xs={12} md={10} sm={10}>
         <Custom_Textfield margin='normal' variant='standard' fullWidth placeholder='Search item'  />
       </Grid>
+
       <Grid item xs={12} md={2} sm={12}>
         <Grid container     
-        direction="column"
+        direction="row"
         justifyContent="center"
-        alignItems="center">
-          <Button variant='contained'> Archive</Button>
+        alignItems="center" spacing={2}>
+
+          {/* Add Product */}
+          <Grid item>
+            <Fab color='primary' onClick={addProduct}>
+              <AddOutlinedIcon/>
+            </Fab>
+          </Grid>
+
+
+          {/* Archive List */}
+          <Grid item>
+            <Fab color='primary'>
+              <ArchiveOutlinedIcon/>
+            </Fab>
+          </Grid> 
+           
         </Grid>
         
+        
       </Grid>
+
+  
+
       <Grid item>
-        <Button variant='outlined'>
+        <Custome_button_2 variant='outlined'
+        onClick={()=> setFilter_data('')}>
           All
-        </Button>
+        </Custome_button_2>
+
       </Grid>
       {category.map(e=>
         {
           return(
               <Grid item key={e.id}>
-                <Button  variant='outlined'>{e.label}</Button>
+                <Custome_button_2  
+                variant='outlined'
+                onClick={()=>{
+                  setFilter_data(e.label)
+                  }}
+                  >
+                  {e.label}
+                </Custome_button_2>
               </Grid>
-            
           )
- 
-          
         }
         )}
 
@@ -97,7 +173,7 @@ return (
           backgroundColor: '#F7C873'
         }}>All</ListSubheader>
       </ImageListItem>
-      {data.map((item) => (
+      {[...filterData()]?.map((item) => (
         <ImageListItem key={item.id} style={{
           padding:10,
           border:'3px solid black',

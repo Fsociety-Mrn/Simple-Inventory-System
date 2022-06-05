@@ -5,18 +5,21 @@ import { Create ,imageUpload , url } from '../../AuthenticationCRUD/CRUD_firebas
 
 // Components
 import { 
+    Alert,
+    AlertTitle,
     Avatar,
     Button,
     Divider, 
     Grid, 
     Input, 
     MenuItem, 
+    Snackbar, 
     Typography 
 } from '@mui/material'
 import { Custom_Textfield } from '../../components/Textfield'
+import { useNavigate } from 'react-router-dom'
 
-
-
+export let success_added = Boolean
 
 export const category = [ // Gender
   {
@@ -75,31 +78,36 @@ const gender = [ // Gender
 const sizes = [ // Sizes
   {
     id: 0,
+    label: 'extra small',
+    value: 'extra small'
+  },
+  {
+    id: 1,
     label: 'small',
     value: 'small'
   },
   {
-    id: 1,
+    id: 2,
     label: 'medium',
     value: 'medium'
   },
   {
-    id: 2,
+    id: 3,
     label: 'Large',
     value: 'Large'
   },
   {
-    id: 3,
+    id: 4,
     label: 'XL',
     value: 'XL'
   },
   {
-    id: 4,
+    id: 6,
     label: '2XL',
     value: '2XL'
   },
   {
-    id: 5,
+    id: 7,
     label: 'PLUS SIZE',
     value: 'PLUS SIZE'
   }
@@ -110,7 +118,7 @@ const [product,setProduct] = useState(
       image:"",
       name: "",
       description: '',
-      category: 'T-shirt',
+      category: '',
       sizes: 'Large',
       gender: 'Female',
       price: 0
@@ -119,16 +127,16 @@ const [product,setProduct] = useState(
 
 const [image,setImage] = useState() //image
 const [dataImage, setDataImage] = useState() //Data Image
-const [send,setSend] = useState(false)
-
+let navigate = useNavigate(); //Naviagte
+const [errors,setError] = useState({
+    empty: false,
+    error: false
+})
 
 // Initialize Functions
 
 const uploadImage = e => {
-// console.log(
-//    imageUpload(e.target.files[0])
-//    .then(e=>{return e})
-// )
+
     let fileReader = new FileReader();
     setDataImage(e.target?.files?.[0])
     fileReader.readAsDataURL(e.target?.files?.[0]);
@@ -173,8 +181,13 @@ const onChange_price = e => {
  
 // Create Button
 const onClick_create = e => {
-    // e.preventDefault()
-    setSend(true)
+    e.preventDefault()
+    if (!product.name || !dataImage
+        || !product.description
+        || product.price === 0
+        || !product.category
+        ) return setError({...errors,empty: true})
+    // console.log(product.name)
     imageUpload(dataImage)
     .then(e=>
         {
@@ -186,19 +199,16 @@ const onClick_create = e => {
                 product.sizes,
                 product.gender,
                 product.price
-            ) ? alert(" data error ") : alert("data has been created")
+            ) ? setError({...errors,error: true}) : success()
         }
-        
-
     )
-    console.log(product)
-
-
 }
 
-useEffect(()=>{
-    if (send) imageUpload(dataImage).then(e=>setProduct({...product, image: e}))
-},[])
+const success = () => {
+    success_added = true
+    navigate("/ViewProduct")
+}
+
 
   return (
     <div>
@@ -206,6 +216,42 @@ useEffect(()=>{
         <br/>
         <br/>
         <br/>
+{/* ERORR */}
+        <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={errors.error}
+        >  
+            <Alert 
+            variant='filled' 
+            severity="error" 
+            sx={{ width: '100%' }} 
+            onClose={()=>{
+                setError({...errors,error: false})
+            }}
+        >
+            <AlertTitle>Error</AlertTitle>
+            Each field must not be left blank.
+            </Alert>
+        </Snackbar>
+{/* Warnnig */}
+        <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={errors.empty}
+        >  
+            <Alert 
+            variant='filled' 
+            severity="warning" 
+            sx={{ width: '100%' }} 
+            onClose={()=>{
+                setError({...errors,empty: false})
+            }}
+        >
+            <AlertTitle>Warning</AlertTitle>
+            Each field must not be left blank.
+            </Alert>
+        </Snackbar>
+
+
         <Grid
         container
         direction="row"
@@ -268,7 +314,7 @@ useEffect(()=>{
                                         display: 'none'
                                     }}
                                 />
-                                    <Button color='primary' component="span">
+                                    <Button color='primary' variant='contained' component="span">
                                         upload image
                                     </Button>
                                 </label>
@@ -288,6 +334,7 @@ useEffect(()=>{
                         placeholder='Input your product name'
                         value={product.name}
                         onChange={onChange_name}
+                        error={errors.empty}
                         />
                     </Grid>
 
@@ -303,6 +350,7 @@ useEffect(()=>{
                         placeholder='Description about the product'
                         value={product.description}
                         onChange={onChange_description}
+                        error={errors.empty}
                         />
                     </Grid>
                       
@@ -338,6 +386,7 @@ useEffect(()=>{
                         label='Category' 
                         value={product.category}
                         onChange={onChange_category}
+                        error={errors.empty}
                         select>
                             {category.map((val)=> (
                                 <MenuItem key={val.id} value={val.label}>
@@ -354,22 +403,7 @@ useEffect(()=>{
                         direction="row"
                         justifyContent="center"
                         alignItems="center" 
-                         >
-                            {/* category */}
-                            {/* <Grid item  xs={12} md={6}>
-                                <Custom_Textfield 
-                                fullWidth 
-                                label='Category' 
-                                value={product.category}
-                                onChange={onChange_category}
-                                select>
-                                    {category.map((val)=> (
-                                        <MenuItem key={val.id} value={val.label}>
-                                            {val.label}
-                                        </MenuItem>
-                                     ))}
-                                </Custom_Textfield>
-                            </Grid> */}
+                        >
 
                             {/* sizes */}
                             <Grid item xs={11} md={6} sm={11}>
@@ -379,6 +413,7 @@ useEffect(()=>{
                                 select 
                                 value={product.sizes}
                                 onChange={onChange_sizes}
+                                error={errors.empty}
                                 >
                                     {sizes.map((val)=> (
                                         <MenuItem key={val.id} value={val.value}>
@@ -396,7 +431,7 @@ useEffect(()=>{
                                 select 
                                 value={product.gender}
                                 onChange={onChange_gender}
-                                
+                                error={errors.empty}
                                 >
                                     {gender.map((val)=> (
                                         <MenuItem key={val.id} value={val.label}>
@@ -422,6 +457,7 @@ useEffect(()=>{
                         placeholder='Input your product price'
                         value={product.price}
                         onChange={onChange_price}
+                        error={errors.empty}
                         />
                     </Grid>
 
@@ -440,10 +476,10 @@ useEffect(()=>{
                     >
                         Create Product
                     </Button>
+
                 </Grid>
 
             
-
 
             </Grid>
 

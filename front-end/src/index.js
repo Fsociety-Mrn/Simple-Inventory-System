@@ -18,10 +18,13 @@ const theme = createTheme({
       disabled: '#000000',
     },
     error:{
-      main: '#890F0D',
+      main: '#dc143c',
     },
     warning:{
-      main: '#434343'
+      main: '#ff8c00'
+    },
+    success:{
+      main: '#32cd32'
     }
   },
 });

@@ -2,7 +2,8 @@
   "projects": {
     "default": "laclothing-78c1f",
     "mern": "mern-stack-7cc72",
-    "laclothing": "laclothing-78c1f"
+    "laclothing": "laclothing-78c1f",
+    "mern-stack": "mern-stack-7cc72"
   },
   "targets": {}
 }

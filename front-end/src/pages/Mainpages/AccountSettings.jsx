@@ -1,9 +1,9 @@
-
 import { Grid, Typography } from '@mui/material'
 import Changepassword from './Changepassword'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { TabContext,TabList,TabPanel } from '@mui/lab'
+
 
 const AccountSettings = () => {
 // Initialize variables
@@ -43,13 +43,11 @@ const tabChange = (event, newValue) => {
           <TabContext value={tabvalue}>
             <Box sx={{ borderBottom: 2, borderColor: 'divider'}}>
               <TabList onChange={tabChange}>
-                {/* <Tab  value='0' /> */}
-                {/* <Tab label="Add User" value='1' /> */}
               </TabList>
 
             </Box>
             <TabPanel value="0">{<Changepassword/>}</TabPanel>
-            {/* <TabPanel value="1">{<Adduser/>}</TabPanel> */}
+
 
           </TabContext>
 

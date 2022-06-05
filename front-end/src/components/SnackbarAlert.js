@@ -8,7 +8,7 @@ export const LOADING_SNACKBAR = (open) => {
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
       message='We were updating your profile'
-      color=''
+
       >  
         <Alert icon={false} variant='filled' severity="warning" sx={{ width: '100%' }} >
           Your profile is currently being updated.
@@ -25,7 +25,6 @@ export const SUCCESS_SNACKBAR = (open) => {
       <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
-      close={open}
       >  
         <Alert open={open} close={open} variant='filled' severity="success" sx={{ width: '100%' }} >
           Your profile is successfully updated!
@@ -35,16 +34,50 @@ export const SUCCESS_SNACKBAR = (open) => {
   )
 }
 
-export const ERROR_SNACKBAR = (open) => {
+export const ERROR_SNACKBAR = ({opens , message}) => {
+  // const [open ,setOpen] = useState(opens)
+  return (
+    <div>
+      <Snackbar
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      open={opens}
+      >  
+        <Alert 
+        variant='filled' 
+        severity="error" 
+        sx={{ width: '100%' }} 
+        onClose={()=>{
+          opens = false
+        }}
+        >
+        <AlertTitle>Error</AlertTitle>
+          {message}
+        </Alert>
+    </Snackbar>
+    </div>
+  )
+}
+
+export const WARNING_SNACKBAR = ({opens = false, message}) => {
+  const [open ,setOpen] = useState(opens)
   return (
     <div>
       <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
-      close={open}
+
+ 
       >  
-        <Alert variant='filled' severity="error" sx={{ width: '100%' }} >
-          Your profile cannot be updated!
+        <Alert 
+        variant='filled' 
+        severity="warning" 
+        sx={{ width: '100%' }} 
+        onClose={()=>{
+          setOpen(false)
+        }}
+        >
+        <AlertTitle>Warning</AlertTitle>
+          {message}
         </Alert>
     </Snackbar>
     </div>

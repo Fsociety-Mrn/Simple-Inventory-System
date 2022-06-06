@@ -8,7 +8,6 @@ import {
 import {  
   Alert, 
   AlertTitle, 
-  Button, 
   Divider, 
   Fab, 
   Grid, 
@@ -16,20 +15,22 @@ import {
   ImageList, 
   ImageListItem, 
   ImageListItemBar, 
+  InputAdornment, 
   ListSubheader, 
   Snackbar, 
   Typography 
 } from '@mui/material';
 import { Custom_Textfield } from '../../components/Textfield'
 import { category } from './Addproduct'
-import {success_added} from './Addproduct'
-import {Custome_button_2} from '../../components/Button'
+import { success_added } from './Addproduct'
+import { Custome_button_2 } from '../../components/Button'
+import { DialogSuccessAdded } from '../../components/Dialoglogout'
 
 // ICONS
 import InfoIcon from "@mui/icons-material/Info";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const Viewproduct = () => {
 // Initiliaze variables
@@ -39,7 +40,12 @@ const [data,setData] = useState([]) //Data
 const usersCollectionRef = collection(db, "Product"); // database
 const [succ,setSucc] = useState(success_added) //success added
 let navigate = useNavigate(); //Naviagte 
-const [filter_data,setFilter_data] = useState('')
+const [filter_data,setFilter_data] = useState('') //filter data
+const [Search,setSearch] = useState() //seacrh
+const [Title,setTitle] = useState('All') // Title
+const [opens,setOpens] = useState(false) //View Image
+const [dataProduct,setDataProduct] = useState()
+
 // Initiliaze function
 
 // fetch data
@@ -67,12 +73,30 @@ const addProduct = () => {
   navigate("/AddProduct")
 }
 
+// Filter data
 const filterData = () => {
    if (filter_data) return data?.filter(e=> e.category === filter_data)
   return data
 }
 
 
+// Search data change
+const searchChange = e => {
+  setSearch(e.target.value)
+}
+
+// Search data
+const search_product = () => {
+  if (Search) return filterData().filter(e=>e.name.toLowerCase().includes(Search.toLowerCase()))
+  return filterData()
+}
+
+// Open dialog
+
+const OpenviewProduct = (item) => {
+  setOpens(true)
+  setDataProduct(item)
+}
 
 return (
     <div>
@@ -80,6 +104,7 @@ return (
     <br/>
     <br/>
     <br/>
+    <DialogSuccessAdded open={opens} setOpen={setOpens} data={dataProduct} />
 {/* Success Message */}
     <Snackbar 
     open={succ} autoHideDuration={5000} 
@@ -107,8 +132,24 @@ return (
         <Divider />
       </Grid>
 
+    {/* seatch */}
       <Grid item xs={12} md={10} sm={10}>
-        <Custom_Textfield margin='normal' variant='standard' fullWidth placeholder='Search item'  />
+        <Custom_Textfield 
+        margin='normal' 
+        variant='standard' 
+        fullWidth 
+        placeholder='Search name of your product'
+        InputProps={
+          {
+            startAdornment: 
+            <InputAdornment position='start'>
+              <SearchOutlinedIcon fontSize='medium'/>
+            </InputAdornment>
+          }
+        }  
+        value={Search}
+        onChange={searchChange}
+        />
       </Grid>
 
       <Grid item xs={12} md={2} sm={12}>
@@ -134,14 +175,19 @@ return (
            
         </Grid>
         
-        
       </Grid>
 
   
 
       <Grid item>
         <Custome_button_2 variant='outlined'
-        onClick={()=> setFilter_data('')}>
+        onClick={()=> {
+          setFilter_data('')
+          setTitle('All')
+          setSearch('')
+          }}
+          autoFocus
+          >
           All
         </Custome_button_2>
 
@@ -154,6 +200,8 @@ return (
                 variant='outlined'
                 onClick={()=>{
                   setFilter_data(e.label)
+                  setTitle(e.label)
+                  setSearch('')
                   }}
                   >
                   {e.label}
@@ -166,26 +214,41 @@ return (
       <Grid item xs={12} md={12}>
       <ImageList>
       <ImageListItem key="Subheader"  cols={2}>
-        <ListSubheader component="div" style={{
+
+        <ListSubheader component="div" 
+          style={{
           border: '2px solid black',
           borderRadius: '5px',
           color: 'black',
-          backgroundColor: '#F7C873'
-        }}>All</ListSubheader>
+          backgroundColor: '#F7C873',
+        }}>
+
+          <Typography margin={1} variant='h6'>
+            {Title}
+          </Typography>
+          
+        </ListSubheader>
+
       </ImageListItem>
-      {[...filterData()]?.map((item) => (
+
+      {[...search_product()]?.map((item) => (
         <ImageListItem key={item.id} style={{
           padding:10,
           border:'3px solid black',
           borderRadius: '10px'
-        }}>
+        }}
+        
+        >
+
           <img
             // key={item.id}
             src={`${item.image}?w=248&fit=crop&auto=format`}
             srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
             alt={item.name}
             loading="lazy"
+            onClick={()=>OpenviewProduct(item)}
           />
+
           <ImageListItemBar
             title={item.name}
             subtitle={item.description}
@@ -198,6 +261,7 @@ return (
               </IconButton>
             }
           />
+
         </ImageListItem>
       ))}
     </ImageList>

@@ -25,13 +25,14 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-export const Sidebar = ({open}) => {
+export const Sidebar = ({open ,setOpen }) => {
 
 // Initialize Variables
 const drawerWidth = 240; //for appbar
 let navigate = useNavigate(); //Naviagte
-
+// const [on,setOn] = useState(open)
 // Initialize Functions
 
 // Overview
@@ -73,7 +74,9 @@ const routeAddProduct = e =>{
           boxSizing: 'border-box',
           backgroundColor:"#F7C873",
         },
-      }}>
+      }}
+      onClose={()=>setOpen(false)}
+      >
 
 
   {/* Icon Title */}

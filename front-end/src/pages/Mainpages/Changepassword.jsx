@@ -78,7 +78,7 @@ const onSubmit_oldpass = e => {
   {
     setNotMatch(true)
   }else{
-    changing_password(oldPass,newPassword.new_password , setMessagge, setError)
+    changing_password(oldPass, newPassword.new_password , setMessagge, setError)
     setNotMatch(false)
   }
   

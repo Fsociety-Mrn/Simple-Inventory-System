@@ -105,7 +105,7 @@ useEffect(()=>{
   return (
     <div>
 {/* Appbar */}
-      <Appar onClick={onClick_AppBar} position='fixed' open={open} >
+      <Appar onClick={onClick_AppBar} position='fixed' open={open}  >
 
         <Toolbar variant='dense'>
 
@@ -199,7 +199,7 @@ useEffect(()=>{
           </Grid>
 
 {/* Appbar */}
-          <Sidebar open={open} />
+          <Sidebar open={open} setOpen={setOpen}/>
 
         </Toolbar>
       </Appar>

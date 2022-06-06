@@ -35,7 +35,7 @@ const storage = getStorage();
 
 export default app;
 
-export const auth = getAuth()
+export const auth = getAuth(app)
 
 export const auths = getAuth(app)
 
@@ -85,7 +85,7 @@ export function useAuth() {
   // forgot Password
   export function ForgotPassword(email) {
     return sendPasswordResetEmail(auth, email, {
-      url: `https://mern-stack-7cc72.web.app/Login`,
+      url: `https://laclothing-78c1f.firebaseapp.com/Login `,
     })
   }
 
@@ -144,7 +144,8 @@ export async function changing_password (currentPass,newPassword,setMessagge,set
     return
   }
   const credential =  EmailAuthProvider.credential(auth.currentUser.email,currentPass,setError)
-    await reauthenticateWithCredential(auth.currentUser, credential)
+    
+  await reauthenticateWithCredential(auth.currentUser, credential)
     .then((res) => {
          updatePassword(auth.currentUser, newPassword)
          .then(() => {

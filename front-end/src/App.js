@@ -3,7 +3,10 @@ import SendEmail from './pages/SendEmail'
 import Overview from './pages/Mainpages/Overview'
 import AccountSetting from './pages/Mainpages/AccountSettings'
 import AddProduct from './pages/Mainpages/Addproduct'
+import EditProduct from './pages/Mainpages/EditProduct'
 import ViewProduct from './pages/Mainpages/Viewproduct'
+import ViewArchive from './pages/Mainpages/ViewArchive'
+import ConfirmDelete from './components/ConfirmDelete'
 import './App.css';
 import {
   Routes,
@@ -64,7 +67,10 @@ function App() {
           <Route path="/Homepage" element={<Overview/>}/>
           <Route path="/AccountSettings" element={<AccountSetting/>}/>
           <Route path="/AddProduct" element={<AddProduct/>}/>
+          <Route path="/EditProduct" element={<EditProduct/>}/>
           <Route path="/ViewProduct" element={<ViewProduct/>}/>
+          <Route path="/ViewArchive" element={<ViewArchive/>}/>
+          <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>
           <Route path="*" element={<Navigate to="/Homepage"/>}/>
         </Route>
 

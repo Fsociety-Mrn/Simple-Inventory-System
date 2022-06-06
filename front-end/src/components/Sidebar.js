@@ -25,14 +25,14 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+
 
 export const Sidebar = ({open ,setOpen }) => {
 
 // Initialize Variables
 const drawerWidth = 240; //for appbar
 let navigate = useNavigate(); //Naviagte
-// const [on,setOn] = useState(open)
+
 // Initialize Functions
 
 // Overview
@@ -52,6 +52,13 @@ const routeViewProduct = e =>{
 const routeAddProduct = e =>{
   e.preventDefault()
   navigate("/AddProduct") 
+
+}
+
+// ViewArchive
+const routeViewArchive = e =>{
+  e.preventDefault()
+  navigate("/ViewArchive") 
 
 }
 
@@ -145,7 +152,7 @@ const routeAddProduct = e =>{
           </ListItemButton>
 
           {/* Archive Products */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeViewArchive}>
             <ListItemIcon> 
               <ArchiveIcon fontSize="medium" />
             </ListItemIcon>

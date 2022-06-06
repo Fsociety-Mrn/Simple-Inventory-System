@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Create ,imageUpload , url } from '../../AuthenticationCRUD/CRUD_firebase'
-
+import React, { useState } from 'react'
+import { Create ,imageUpload  ,update} from '../../AuthenticationCRUD/CRUD_firebase'
+import { dataExport } from '../../components/Dialoglogout'
 
 
 // Components
@@ -19,7 +19,8 @@ import {
 import { Custom_Textfield } from '../../components/Textfield'
 import { useNavigate } from 'react-router-dom'
 
-export let success_added = false
+
+export let success_Edit = Boolean
 
 export const category = [ // Gender
   {
@@ -60,7 +61,7 @@ export const category = [ // Gender
   }
 ]
 
-const Addproduct = () => {
+const EditProduct = () => {
 // Initialize Variables
 
 const gender = [ // Gender
@@ -113,20 +114,11 @@ const sizes = [ // Sizes
   }
 ]
 
-const [product,setProduct] = useState(
-    {
-      image:"",
-      name: "",
-      description: '',
-      category: '',
-      sizes: 'Large',
-      gender: 'Female',
-      price: 0
-    }
-) //Data product
+const [product,setProduct] = useState(dataExport) //Data product
 
 const [image,setImage] = useState() //image
 const [dataImage, setDataImage] = useState() //Data Image
+
 let navigate = useNavigate(); //Naviagte
 const [errors,setError] = useState({
     empty: false,
@@ -182,30 +174,46 @@ const onChange_price = e => {
 // Create Button
 const onClick_create = e => {
     e.preventDefault()
-    if (!product.name || !dataImage
+    // console.log(product)
+    if (!product.name 
         || !product.description
-        || product.price === 0
+        || product.price === "0"
         || !product.category
         ) return setError({...errors,empty: true})
-    // console.log(product.name)
-    imageUpload(dataImage)
-    .then(e=>
-        {
-            Create(
-                String(e),
-                product.name,
-                product.description,
-                product.category,
-                product.sizes,
-                product.gender,
-                product.price
-            ) ? setError({...errors,error: true}) : success()
-        }
-    )
+   
+    if (dataImage)
+    {
+        imageUpload(dataImage)
+        .then(e=>
+            {
+                !update(
+                    product.id,
+                    String(e),
+                    product.name,
+                    product.description,
+                    product.category,
+                    product.sizes,
+                    product.gender,
+                    product.price
+                ) ? setError({...errors,error: true}) : success()
+            }
+        )
+    }else{
+        !update(product.id,
+            product.image,
+            product.name,
+            product.description,
+            product.category,
+            product.sizes,
+            product.gender,
+            product.price) ? setError({...errors,error: true}) : success()
+    }
+
+   
 }
 
 const success = () => {
-    success_added = true
+    success_Edit = true
     navigate("/ViewProduct")
 }
 
@@ -216,6 +224,7 @@ const success = () => {
         <br/>
         <br/>
         <br/>
+        {/* {console.log(product.id)} */}
 {/* ERORR */}
         <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -233,6 +242,7 @@ const success = () => {
             Each field must not be left blank.
             </Alert>
         </Snackbar>
+
 {/* Warnnig */}
         <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -264,7 +274,7 @@ const success = () => {
 
 {/* Add Product */}
             <Grid item xs={12} md={12} sm={12}>
-                <Typography paddingLeft={2} variant='h3'>Add Product</Typography> 
+                <Typography paddingLeft={2} variant='h3'>Edit Product</Typography> 
                 <Divider />
             </Grid>
 
@@ -298,7 +308,7 @@ const success = () => {
                             {/* <TextField fullWidth /> */}
                             <Grid item xs={12} md={3}>
                                 <Avatar sx={{ width: 150, height: 150, border:"2px solid black" }}
-                                src={image}>
+                                src={image ? image : product.image}>
                                 A
                                 </Avatar>
                             </Grid>  
@@ -474,7 +484,7 @@ const success = () => {
                     <Button fullWidth variant='contained'
                     onClick={onClick_create}
                     >
-                        Create Product
+                        Update Product
                     </Button>
 
                 </Grid>
@@ -489,4 +499,4 @@ const success = () => {
   )
 }
 
-export default Addproduct
+export default EditProduct

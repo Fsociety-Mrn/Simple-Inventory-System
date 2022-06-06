@@ -6,48 +6,51 @@ import {
     getDocs
   } from "firebase/firestore";
 import {  
-  Alert, 
-  AlertTitle, 
+  Alert,
+  AlertTitle,
   Divider, 
   Fab, 
   Grid, 
-  IconButton, 
   ImageList, 
   ImageListItem, 
   ImageListItemBar, 
   InputAdornment, 
   ListSubheader, 
+ 
   Snackbar, 
+ 
   Typography 
 } from '@mui/material';
 import { Custom_Textfield } from '../../components/Textfield'
 import { category } from './Addproduct'
-import { success_added } from './Addproduct'
-import { success_Edit } from './EditProduct'
+import { deleted } from '../../components/ConfirmDelete'
 import { Custome_button_2 } from '../../components/Button'
-import { DialogSuccessAdded , successRetrieve} from '../../components/Dialoglogout'
+import { ArchiveDialog  ,archiveData} from '../../components/Dialoglogout'
 
 // ICONS
-import InfoIcon from "@mui/icons-material/Info";
+
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-const Viewproduct = () => {
+
+
+export let dialogSHow = false
+const ViewArchive = () => {
 // Initiliaze variables
 
 const [data,setData] = useState([]) //Data
 // const [data,setData] = useState() //Data
-const usersCollectionRef = collection(db, "Product"); // database
-const [succ,setSucc] = useState(success_added) //success added
-const [succe,setSucce] = useState(success_Edit) //success edit
+const usersCollectionRef = collection(db, "ArchiveProduct"); // database
+
 let navigate = useNavigate(); //Naviagte 
 const [filter_data,setFilter_data] = useState('') //filter data
 const [Search,setSearch] = useState() //seacrh
 const [Title,setTitle] = useState('All') // Title
 const [opens,setOpens] = useState(false) //View Image
-const [dataProduct,setDataProduct] = useState() 
-const [retrieve,setRetrieve] = useState(successRetrieve)
+const [dataProduct,setDataProduct] = useState() // for data product
+const [succ,setSucc] = useState(deleted) //success edit
+const [archive,setArchive] = useState(archiveData) //sucess archive
 
 // Initiliaze function
 
@@ -67,21 +70,6 @@ useEffect(()=>{
 //  return aoc()
 },[])
 
-// Close success
-const handleClose = () => {
-  setSucc(false)
-}
-
-// close dit
-const handleClose_edit = () => {
-  setSucce(false)
-}
-
-// close retrieve
-
-const handleClose_retrieve = () => {
-  setRetrieve(false)
-}
 
 // add product
 const addProduct = () => {
@@ -94,6 +82,15 @@ const filterData = () => {
   return data
 }
 
+// CLose
+const handleClose = () => {
+  setSucc(false)
+}
+
+// close archive
+const handleClose_archive = () => {
+  setArchive(false)
+}
 
 // Search data change
 const searchChange = e => {
@@ -120,41 +117,29 @@ return (
     <br/>
     <br/>
 
-    {/* VIew Product */}
-    <DialogSuccessAdded open={opens} setOpen={setOpens} data={dataProduct} />
-
-{/* Success Message */}
+{/* Success deleted */}
     <Snackbar 
     open={succ} autoHideDuration={5000} 
     anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
     onClose={handleClose} >
       <Alert severity="success" variant='filled' onClose={handleClose} sx={{ width: '100%' }}>
         <AlertTitle>Success</AlertTitle>
-        successfully added product
-      </Alert>
-    </Snackbar>    
-
-{/* Success Retrieve */}
-<Snackbar 
-    open={retrieve} autoHideDuration={5000} 
-    anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
-    onClose={handleClose_retrieve} >
-      <Alert severity="success" variant='filled' onClose={handleClose_retrieve} sx={{ width: '100%' }}>
-        <AlertTitle>Success</AlertTitle>
-        product successfully recovered
+        successfully deleted!
       </Alert>
     </Snackbar> 
 
-{/* Success Edit */}
+{/* Success Archive */}
 <Snackbar 
-    open={succe} autoHideDuration={5000} 
+    open={archive} autoHideDuration={5000} 
     anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
-    onClose={handleClose_edit} >
-      <Alert severity="success" variant='filled' onClose={handleClose_edit} sx={{ width: '100%' }}>
+    onClose={handleClose_archive} >
+      <Alert severity="success" variant='filled' onClose={handleClose_archive} sx={{ width: '100%' }}>
         <AlertTitle>Success</AlertTitle>
-        successfully edit product
+        The product was saved to the archive.
       </Alert>
-    </Snackbar>       
+    </Snackbar>
+    {/* VIew Product */}
+    <ArchiveDialog open={opens} setOpen={setOpens} data={dataProduct} />  
 
     <Grid
     container
@@ -168,7 +153,7 @@ return (
     >
       {/* View Product */}
       <Grid item xs={12} md={12} sm={12}>
-        <Typography variant='h3'>View Product</Typography> 
+        <Typography variant='h3'>View Archive</Typography> 
         <Divider />
       </Grid>
 
@@ -206,10 +191,10 @@ return (
           </Grid>
 
 
-          {/* Archive List */}
+          {/* Product List */}
           <Grid item>
-            <Fab color='primary' onClick={()=>navigate("/ViewArchive") }>
-              <ArchiveOutlinedIcon/>
+            <Fab color='primary' onClick={()=>navigate("/ViewProduct")}>
+              <ShoppingCartCheckoutIcon/>
             </Fab>
           </Grid> 
            
@@ -292,14 +277,6 @@ return (
           <ImageListItemBar
             title={item.name}
             subtitle={item.description}
-            actionIcon={
-              <IconButton
-                sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                aria-label={`info about ${item.name}`}
-              >
-                <InfoIcon />
-              </IconButton>
-            }
           />
 
         </ImageListItem>
@@ -313,4 +290,4 @@ return (
   )
 }
 
-export default Viewproduct
+export default ViewArchive

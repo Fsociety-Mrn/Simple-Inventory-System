@@ -7,6 +7,7 @@ import EditProduct from './pages/Mainpages/EditProduct'
 import ViewProduct from './pages/Mainpages/Viewproduct'
 import ViewArchive from './pages/Mainpages/ViewArchive'
 import ConfirmDelete from './components/ConfirmDelete'
+import AddOrder from './pages/Mainpages/AddOrder'
 import './App.css';
 import {
   Routes,
@@ -63,15 +64,26 @@ function App() {
           <Privateroute>
             <App_sidebar/>
           </Privateroute>
-        } >
-          <Route path="/Homepage" element={<Overview/>}/>
+        }>
+
+          {/* Account Settings */}
           <Route path="/AccountSettings" element={<AccountSetting/>}/>
+
+          {/* Dashboard */}
+          <Route path="/Homepage" element={<Overview/>}/>
+
+          {/* Products */}
           <Route path="/AddProduct" element={<AddProduct/>}/>
           <Route path="/EditProduct" element={<EditProduct/>}/>
           <Route path="/ViewProduct" element={<ViewProduct/>}/>
           <Route path="/ViewArchive" element={<ViewArchive/>}/>
-          <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>
+
+          {/* Orders */}
+          <Route path='/AddOrder' element={<AddOrder/>}/>
+
+
           <Route path="*" element={<Navigate to="/Homepage"/>}/>
+          <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>
         </Route>
 
       </Routes>

@@ -10,7 +10,7 @@ import {
   } from "firebase/firestore";
   import { v4 } from "uuid";
 import { Preview } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const usersCollectionRef = collection(db, "Product"); //Product
 const usersCollectionRef_archive = collection(db, "ArchiveProduct"); //Archive product
@@ -101,8 +101,11 @@ export const Retrieve_From_archive = (data) => {
 
 }
 
-// Read
 
+
+// Update
+
+// Update Product
 export const update = async (
     id,
     image,

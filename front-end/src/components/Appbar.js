@@ -199,7 +199,7 @@ useEffect(()=>{
           </Grid>
 
 {/* Appbar */}
-          <Sidebar open={open} setOpen={setOpen}/>
+          <Sidebar open={open} setOpen={setOpen }/>
 
         </Toolbar>
       </Appar>

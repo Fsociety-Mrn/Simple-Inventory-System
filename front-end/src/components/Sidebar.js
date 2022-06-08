@@ -62,7 +62,12 @@ const routeViewArchive = e =>{
 
 }
 
+// AddOrder
+const routeAddOrder = e =>{
+  e.preventDefault()
+  navigate("/AddOrder") 
 
+}
 
   return (
     <div>    
@@ -167,6 +172,15 @@ const routeViewArchive = e =>{
             <Divider/>
           </Grid>  
 
+
+          {/* Add order */}       
+          <ListItemButton onClick={routeAddOrder}>
+            <ListItemIcon> 
+              <PersonAddAltIcon fontSize="medium" />
+            </ListItemIcon>
+            <ListItemText> Add order</ListItemText>
+          </ListItemButton> 
+
           {/* Order list */}       
           <ListItemButton>
             <ListItemIcon> 
@@ -174,14 +188,6 @@ const routeViewArchive = e =>{
             </ListItemIcon>
             <ListItemText> Order list</ListItemText>
           </ListItemButton>
-
-          {/* Add order */}       
-          <ListItemButton>
-            <ListItemIcon> 
-              <PersonAddAltIcon fontSize="medium" />
-            </ListItemIcon>
-            <ListItemText> Add order</ListItemText>
-          </ListItemButton> 
 
           {/* Pending order */}       
           <ListItemButton>

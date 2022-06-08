@@ -34,7 +34,7 @@ export const SUCCESS_SNACKBAR = (open) => {
   )
 }
 
-export const ERROR_SNACKBAR = ({opens , message}) => {
+export const ERROR_SNACKBAR = ({opens , setOpens, message}) => {
   // const [open ,setOpen] = useState(opens)
   return (
     <div>
@@ -47,7 +47,7 @@ export const ERROR_SNACKBAR = ({opens , message}) => {
         severity="error" 
         sx={{ width: '100%' }} 
         onClose={()=>{
-          opens = false
+          setOpens(false)
         }}
         >
         <AlertTitle>Error</AlertTitle>

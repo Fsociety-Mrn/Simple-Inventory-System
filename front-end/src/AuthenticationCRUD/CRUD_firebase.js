@@ -13,6 +13,7 @@ import { Preview } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 const usersCollectionRef = collection(db, "Product"); //Product
+const usersCollectionRef_Order = collection(db, "Order"); //Order
 const usersCollectionRef_archive = collection(db, "ArchiveProduct"); //Archive product
 const storage = getStorage();
 
@@ -94,6 +95,21 @@ export const Retrieve_From_archive = (data) => {
         }
         createData()
         deleteArchive(data.id)
+        return console.log("Goods nag create ng archive")
+    }catch(e){
+        return console.log("Awts di nag create huhu bells")
+    }
+
+}
+
+// Create Order
+export const CreateOrder = (data) => {
+    try {
+        const createData = async () => {
+            await addDoc(usersCollectionRef_Order,data)
+        }
+        createData()
+        
         return console.log("Goods nag create ng archive")
     }catch(e){
         return console.log("Awts di nag create huhu bells")

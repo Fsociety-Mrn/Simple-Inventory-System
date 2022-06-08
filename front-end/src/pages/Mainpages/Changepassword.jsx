@@ -151,8 +151,16 @@ return (
               justifyContent="center"
               alignItems="center"
               >
-                <Avatar src={image} sx={{width: 150, height: 150, border: "2px solid #FAEBCD" }} >
-                A
+                <Avatar 
+                src={image} 
+                sx={
+                  {
+                    width: 150, 
+                    height: 150, 
+                    border: "2px solid #FAEBCD" 
+                  }
+                }>
+                  A
                 </Avatar>
               </Grid>
             </Grid>
@@ -231,29 +239,34 @@ return (
             <Grid item xs={12} md={12} sm={12}>
               <Custom_Textfield 
               fullWidth 
+              type='password'
               placeholder="Old password" 
               variant='outlined' 
               margin='normal' 
               value={oldPass}
               onChange={onChange_Oldpass}
+              
               /> 
             </Grid>
 
             <Grid item xs={12} md={12} sm={12}>
               <Custom_Textfield 
               fullWidth 
+              type='password'
               placeholder="New password" 
               variant='outlined'  
               margin='normal' 
               value={newPassword.password}
               onChange={onChange_newPassword}
               error={notMatch}
+              
               /> 
             </Grid>
 
             <Grid item xs={12} md={12} sm={12}>
               <Custom_Textfield 
               fullWidth 
+              type='password'
               placeholder="Confirm password" 
               variant='outlined'  
               margin='normal'
@@ -261,6 +274,7 @@ return (
               onChange={onChange_ConfirmPassword}
               error={notMatch}
               helperText={notMatch ? "password does not match" : "" }
+              
               /> 
             </Grid>
 

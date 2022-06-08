@@ -4,7 +4,7 @@ import {
   collection,
   getDocs
 } from "firebase/firestore";
-
+import { addOrderSchema ,QuantitySchema } from '../../AuthenticationCRUD/Validation'
 
 // Components
 import { 
@@ -27,6 +27,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'; 
 import { Custom_Textfield } from '../../components/Textfield'
 import moment from 'moment'
+import { ERROR_SNACKBAR } from '../../components/SnackbarAlert'
+import { CreateOrder } from '../../AuthenticationCRUD/CRUD_firebase'
 
 // Icons or Images
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -63,13 +65,12 @@ const AddOrder = () => {
     {
       label: 'COD'
     }] //mode of payment
-  
+  const [quanti,setQuanti] = useState(false) //Quantity validation
+  const [error,setError] = useState(false) 
 
 // Initialize Function
 
 // Get Product data
-
-// fetch data
 useEffect(()=>{
 
   // const aoc = () => {
@@ -93,9 +94,9 @@ useEffect(()=>{
 // Add Button
   const handleClick_ADDPro = e => {
     setPurchase([...purchase,{
-      'Product_name' : '',
+      'Product_name' : "",
       'Product_Quantity': 0,
-      'Description' : '',
+      'Description' : "",
       'total_payment' : 0
     }])
   }
@@ -116,24 +117,39 @@ useEffect(()=>{
     list[key]['Product_Quantity'] = 1
     
     setPurchase(list)
+    setQuanti(false)
+  }
+
+// Description change
+  const handleChange_ProDesc = (key,e) => {
+    const list = [...purchase]
+    list[key]['Description'] = e.target.value
+    setPurchase(list)
   }
 
 // Quantity change
-
-const handleChange_ProQuan = (key,e) =>{
+const handleChange_ProQuan = async(key,e) =>{
   const list = [...purchase]
   list[key]['Product_Quantity'] = e.target.value
-  
   setPurchase(list)
+
+  const valid =  await QuantitySchema.isValid({quantity: e.target.value })
+  if (valid) {
+    
+    return setQuanti(false)
+  }
+  
+  return setQuanti(true)
 }
 
 // Customer name
-  const handleChange_CusName = e => {
+  const handleChange_CusName = (e) => {
     setOrder({...Order,name: e.target.value })
+
   }
 
   // Customer email
-  const handleChange_CusEmail = e => {
+  const handleChange_CusEmail = async(e) => {
     setOrder({...Order,email: e.target.value })
   }
 
@@ -159,11 +175,33 @@ const handleChange_ProQuan = (key,e) =>{
   }
 
   // Add Order
-  const handleOnlick_Order = e =>{
+  const handleOnlick_Order = async(e) =>{
     e.preventDefault()
-    alert('dipa pa nagagawan ng code')
-    console.log(Order)
-    console.log(purchase.map(e=>e.Product_name))
+
+
+    const valid = await addOrderSchema.isValid({
+      name: Order.name,
+      email: Order.email,
+      location: Order.location,
+      purchase: String(purchase?.map(e=>e.Product_name)),
+
+     })
+
+     if (valid && quanti !== true) 
+     {
+      CreateOrder({
+        'name' : Order.name,
+        'email': Order.email,
+        'location': Order.location,
+        'purchase': String(purchase?.map(e=>e.Product_name)),
+        'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
+        'Description' : String(purchase?.map(e=>e.Description)),
+        'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
+      })
+      return setError(false)
+     }
+     console.log('may error')
+     return setError(true)
   }
   return (
     <div>
@@ -171,12 +209,17 @@ const handleChange_ProQuan = (key,e) =>{
     <br/>
     <br/>
     <br/> 
+{/* error */}
+    <ERROR_SNACKBAR opens={error} setOpens={setError} 
+    message='Please do not leave any fields blank and enter valid data.'
+    />
     <Grid
     container
     direction="row"
     justifyContent="center"
     alignItems="center"
     paddingLeft={2}
+    paddingBottom={5}
     spacing={2}
     
     >
@@ -221,6 +264,7 @@ const handleChange_ProQuan = (key,e) =>{
             value={Order.name}
             onChange={handleChange_CusName}
             required
+            error={error}
             />
           </Grid>
 
@@ -234,7 +278,9 @@ const handleChange_ProQuan = (key,e) =>{
             required
             value={Order.email}
             onChange={handleChange_CusEmail}
-            />
+            error={error}
+            helperText={error ? 'Please provide a valid email address.' : ''}
+           />
           </Grid>
 
 {/* Location */}
@@ -246,6 +292,7 @@ const handleChange_ProQuan = (key,e) =>{
             required
             value={Order.location}
             onChange={handleChange_CusLoc}
+            error={error}
             />
           </Grid>
 
@@ -323,7 +370,7 @@ const handleChange_ProQuan = (key,e) =>{
           }}
           paddingRight={3}
           paddingLeft={1}
-          paddingBottom={6}
+          paddingBottom={2}
           spacing={2}
           >
 
@@ -367,11 +414,13 @@ const handleChange_ProQuan = (key,e) =>{
                     <Custom_Textfield
                     {...params}
                     fullWidth
+                    error={error}
                     value={index.Product_name}
                     label='Product name'
                     type='text' 
                     variant="outlined" 
                     margin="normal"/>}
+                  
                   />
 
     
@@ -385,6 +434,9 @@ const handleChange_ProQuan = (key,e) =>{
                   onChange={e=>handleChange_ProQuan(key,e)}
                   label='Quantity'
                   type='number'
+                  error={quanti}
+                  helperText={quanti ? 'Invalid Input' : ''}
+                  
                   >
                     
                   </Custom_Textfield>
@@ -434,6 +486,8 @@ const handleChange_ProQuan = (key,e) =>{
                   label='Description' 
                   multiline 
                   rows={2}
+                  value={index.Description} 
+                  onChange={(e)=>handleChange_ProDesc(key,e)}
                   />
                 </Grid>
   

@@ -21,7 +21,7 @@ import {
   Typography 
 } from '@mui/material';
 import { Custom_Textfield } from '../../components/Textfield'
-import { category } from './Addproduct'
+// import { category } from './Addproduct'
 import { success_added } from './Addproduct'
 import { success_Edit } from './EditProduct'
 import { Custome_button_2 } from '../../components/Button'
@@ -48,16 +48,25 @@ const [Title,setTitle] = useState('All') // Title
 const [opens,setOpens] = useState(false) //View Image
 const [dataProduct,setDataProduct] = useState() 
 const [retrieve,setRetrieve] = useState(successRetrieve)
-
+const [ category , setCategory] = useState([])
 // Initiliaze function
 
 // fetch data
 useEffect(()=>{
 
-  // const aoc = () => {
+  // 
       getDocs(usersCollectionRef).then(
       snapshop=>{
         setData(
+          snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+        )
+      }
+    )
+
+// category
+    getDocs(collection(db, "Category")).then(
+      snapshop=>{
+          setCategory(
           snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
         )
       }
@@ -90,7 +99,7 @@ const addProduct = () => {
 
 // Filter data
 const filterData = () => {
-   if (filter_data) return data?.filter(e=> e.category === filter_data)
+   if (filter_data) return data?.filter(e=> e.category.toLowerCase().includes(filter_data.toLowerCase()))
   return data
 }
 
@@ -98,11 +107,12 @@ const filterData = () => {
 // Search data change
 const searchChange = e => {
   setSearch(e.target.value)
+
 }
 
 // Search data
 const search_product = () => {
-  if (Search) return filterData().filter(e=>e.name.toLowerCase().includes(Search.toLowerCase()))
+  if (Search) return filterData().filter(e=>e.name.replace(' ','').toLowerCase().includes(Search.replace(' ','').toLowerCase()))
   return filterData()
 }
 
@@ -232,19 +242,19 @@ return (
         </Custome_button_2>
 
       </Grid>
-      {category.map(e=>
+      {category?.map(e=>
         {
           return(
               <Grid item key={e.id}>
                 <Custome_button_2  
                 variant='outlined'
                 onClick={()=>{
-                  setFilter_data(e.label)
-                  setTitle(e.label)
+                  setFilter_data(e.name)
+                  setTitle(e.name)
                   setSearch('')
                   }}
                   >
-                  {e.label}
+                  {e.name.toLowerCase()}
                 </Custome_button_2>
               </Grid>
           )

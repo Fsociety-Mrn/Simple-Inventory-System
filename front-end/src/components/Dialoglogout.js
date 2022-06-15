@@ -253,3 +253,102 @@ return(
   </>
 )
 }
+
+export const OrderViewDialog = ({setOpen, open=true}) => {
+  let navigate = useNavigate(); //Naviagte
+  return(
+    <>
+    
+    <Dialog
+    // fullScreen={fullScreen}
+    open={open}
+    scroll='paper'
+    onClose={()=>setOpen(false)}
+    
+    
+    >
+      <DialogTitle variant='h5' color='black' style={{
+        backgroundColor: '#FAEBCD'
+      }} >
+        Name
+      </DialogTitle>
+
+      <DialogContent style={{
+        backgroundColor: '#FAEBCD'
+      
+      }}
+      
+      >
+
+        
+        <DialogContentText variant='h6' color='black'>
+          Description:
+        </DialogContentText>
+        <DialogContentText variant='subtitle1' color='black'>
+          Description
+        </DialogContentText>
+                
+        <DialogContentText variant='h6' color='black'>
+          Category:         
+        </DialogContentText>
+        <DialogContentText variant='subtitle1' color='black'> asds </DialogContentText>
+
+
+        <DialogContentText variant='h6' color='black'>
+          Sizes: Description
+        </DialogContentText>
+
+        <DialogContentText variant='h6' color='black'>
+          Gender: Description
+        </DialogContentText>
+
+        <DialogContentText variant='h6' color='black'>
+          prices: Description
+        </DialogContentText>
+      </DialogContent>
+
+
+
+      <DialogActions 
+      style={{
+        backgroundColor: '#FAEBCD',
+          }}>
+        <Button 
+
+        variant='outlined'
+        startIcon={<DeleteIcon/>}   
+        size='medium' 
+        color='error'
+        onClick={()=>{
+          // deleteArchive(data.id)
+          setOpen(false)
+          // MoeArchive(true)
+          navigate("/ConfirmDelete")
+
+        }}
+        >
+          Delete
+        </Button>
+
+        <Button  
+        variant='contained'
+        startIcon={<DriveFileMoveIcon/>}
+        size='medium'
+        autoFocus 
+        onClick={()=>
+          {
+             
+            setOpen(false)
+            // successRetrieve = true
+            navigate("/ViewProduct") 
+          }
+        } 
+        >
+          Retrieve
+        </Button>
+
+      </DialogActions>
+    </Dialog>  
+    </>
+  )
+}

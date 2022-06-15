@@ -1,16 +1,13 @@
 import { db } from './firebase'
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable , } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes,  } from "firebase/storage";
 import {
     collection,
-    getDocs,
     addDoc,
     updateDoc,
     deleteDoc,
     doc,
   } from "firebase/firestore";
-  import { v4 } from "uuid";
-import { Preview } from '@mui/icons-material';
-import { useState, useEffect } from 'react';
+
 
 const usersCollectionRef = collection(db, "Product"); //Product
 const usersCollectionRef_Order = collection(db, "Order"); //Order
@@ -103,15 +100,20 @@ export const Retrieve_From_archive = (data) => {
 }
 
 // Create Order
+// const navi = (url) => {
+//     let navigate = useNavigate(); 
+//     navigate(url)
+// }
 export const CreateOrder = (data) => {
+
     try {
         const createData = async () => {
             await addDoc(usersCollectionRef_Order,data)
         }
         createData()
-        
         return console.log("Goods nag create ng archive")
     }catch(e){
+        console.error(e)
         return console.log("Awts di nag create huhu bells")
     }
 
@@ -134,16 +136,19 @@ export const update = async (
     ) =>{
     try{
         const useDoc = doc(db, "Product" , id)
-        await updateDoc(useDoc, 
-            { 
-                image: image,
-                name: name,
-                description: description,
-                category: category,
-                sizes: sizes,
-                gender : gender,
-                price: price
-            })
+        const updates = async () => {
+            await updateDoc(useDoc, 
+                { 
+                    image: image,
+                    name: name,
+                    description: description,
+                    category: category,
+                    sizes: sizes,
+                    gender : gender,
+                    price: price
+                })
+        }
+        updates()
         return false
     }catch(e){
         return true

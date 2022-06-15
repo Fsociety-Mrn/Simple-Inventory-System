@@ -22,7 +22,6 @@ import {
   Typography 
 } from '@mui/material';
 import { Custom_Textfield } from '../../components/Textfield'
-import { category } from './Addproduct'
 import { deleted } from '../../components/ConfirmDelete'
 import { Custome_button_2 } from '../../components/Button'
 import { ArchiveDialog  ,archiveData} from '../../components/Dialoglogout'
@@ -52,6 +51,7 @@ const [dataProduct,setDataProduct] = useState() // for data product
 const [succ,setSucc] = useState(deleted) //success edit
 const [archive,setArchive] = useState(archiveData) //sucess archive
 
+const [ category , setCategory] = useState([])
 // Initiliaze function
 
 // fetch data
@@ -65,9 +65,15 @@ useEffect(()=>{
         )
       }
     )
-  // }
-  
-//  return aoc()
+
+// category
+    getDocs(collection(db, "Category")).then(
+      snapshop=>{
+          setCategory(
+          snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+        )
+      }
+    )
 },[])
 
 
@@ -217,19 +223,19 @@ return (
         </Custome_button_2>
 
       </Grid>
-      {category.map(e=>
+      {category?.map(e=>
         {
           return(
               <Grid item key={e.id}>
                 <Custome_button_2  
                 variant='outlined'
                 onClick={()=>{
-                  setFilter_data(e.label)
-                  setTitle(e.label)
+                  setFilter_data(e.name)
+                  setTitle(e.name)
                   setSearch('')
                   }}
                   >
-                  {e.label}
+                  {e.name}
                 </Custome_button_2>
               </Grid>
           )

@@ -35,11 +35,9 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { useNavigate } from 'react-router-dom';
 
-export let success_added = Boolean //success aded
-// export let navigate = useNavigate(); 
-const AddOrder = () => {
+
+const EditOrder = () => {
 //Initialize Variables 
   const usersCollectionRef = collection(db, "Product"); // database
   const [product,setProduct] = useState([])
@@ -69,13 +67,12 @@ const AddOrder = () => {
     }] //mode of payment
   const [quanti,setQuanti] = useState(false) //Quantity validation
   const [error,setError] = useState(false) 
-  let navigate = useNavigate(); //naviaget
 
 // Initialize Function
 
 // Get Product data
 useEffect(()=>{
-  success_added = false
+
   // const aoc = () => {
       getDocs(usersCollectionRef)
       .then(
@@ -164,7 +161,7 @@ const handleChange_ProQuan = async(key,e) =>{
   // date
   const handleChange = (newValue) => {
     setValue(newValue);
-    setOrder({...Order,date: String(moment(newValue,"mm-dd-yyyy").format().split('T')[0]) })
+    setOrder({...Order,date: moment(newValue,"mm-dd-yyyy").format().split('T')[0] })
   };
 
   // Mode
@@ -189,24 +186,19 @@ const handleChange_ProQuan = async(key,e) =>{
       purchase: String(purchase?.map(e=>e.Product_name)),
 
      })
-        
+
      if (valid && quanti !== true) 
      {
-      setError(false)
       CreateOrder({
         'name' : Order.name,
         'email': Order.email,
-        'date' : String(Order.date),
         'location': Order.location,
         'purchase': String(purchase?.map(e=>e.Product_name)),
         'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
         'Description' : String(purchase?.map(e=>e.Description)),
-        'status' : Order.Status,
         'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
       })
-      success_added=true
-      return navigate('/OrderList') 
-
+      return setError(false)
      }
      console.log('may error')
      return setError(true)
@@ -236,7 +228,7 @@ const handleChange_ProQuan = async(key,e) =>{
       <Grid item xs={12}>
         <Typography 
         //paddingLeft={2} 
-        variant='h3'>Add Order</Typography> 
+        variant='h3'>Edit Order</Typography> 
         <Divider />
       </Grid>
 
@@ -259,6 +251,7 @@ const handleChange_ProQuan = async(key,e) =>{
         paddingLeft={1}
         spacing={2}
         >
+          <Button onClick={()=> console.log(moment(value,"mm-dd-yyyy").format().split('T')[0])}>click me</Button>
           <Grid item xs={12}>
             <Typography variant='h5'>Customer Details</Typography>
           </Grid>
@@ -563,4 +556,4 @@ const handleChange_ProQuan = async(key,e) =>{
   )
 }
 
-export default AddOrder
+export default EditOrder

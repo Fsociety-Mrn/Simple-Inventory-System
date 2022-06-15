@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import { Create ,imageUpload  ,update} from '../../AuthenticationCRUD/CRUD_firebase'
 import { dataExport } from '../../components/Dialoglogout'
 
+import { db } from '../../AuthenticationCRUD/firebase'
+import {
+    collection,
+    getDocs
+  } from "firebase/firestore";
 
 // Components
 import { 
@@ -12,12 +17,16 @@ import {
     Divider, 
     Grid, 
     Input, 
+    ListItemIcon, 
+    ListItemText, 
     MenuItem, 
     Snackbar, 
     Typography 
 } from '@mui/material'
 import { Custom_Textfield } from '../../components/Textfield'
 import { useNavigate } from 'react-router-dom'
+
+import SettingsIcon from '@mui/icons-material/Settings';
 
 
 export let success_Edit = Boolean
@@ -72,11 +81,21 @@ const gender = [ // Gender
   {
     id: 1,
     label: 'Female'
-  }  
+  },
+  {
+    id: 2,
+    label: 'Unisex'
+  } 
 ]
 
+const usersCollectionRef = collection(db, "Category"); // database
 
 const sizes = [ // Sizes
+  {
+    id: -1,
+    label: 'Not Aplicable',
+    value: 'Not Aplicable'
+  },
   {
     id: 0,
     label: 'extra small',
@@ -118,7 +137,7 @@ const [product,setProduct] = useState(dataExport) //Data product
 
 const [image,setImage] = useState() //image
 const [dataImage, setDataImage] = useState() //Data Image
-
+const [category, setCategory] = useState([]) // caetgory
 let navigate = useNavigate(); //Naviagte
 const [errors,setError] = useState({
     empty: false,
@@ -139,7 +158,18 @@ const uploadImage = e => {
 
 }
 
+// Read data
+React.useEffect(()=>{
 
+    getDocs(usersCollectionRef).then(
+    snapshop=>{
+        setCategory(
+        snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+      )
+    }
+  )
+
+},[])
 
 // Name
 const onChange_name = e => {
@@ -217,7 +247,10 @@ const success = () => {
     navigate("/ViewProduct")
 }
 
-
+// setting category
+const caetgory_settings = () => {
+    navigate("/AddProduct/Settings_Category")
+}
   return (
     <div>
         <br/>
@@ -398,9 +431,19 @@ const success = () => {
                         onChange={onChange_category}
                         error={errors.empty}
                         select>
-                            {category.map((val)=> (
-                                <MenuItem key={val.id} value={val.label}>
-                                    {val.label}
+                            <MenuItem onClick={caetgory_settings}>
+                                <ListItemText>
+                                    Category Settings
+                                </ListItemText>
+                                <ListItemIcon>
+                                    <SettingsIcon/>
+                                </ListItemIcon>
+                            </MenuItem>
+                            {category?.map((val)=> (
+                                <MenuItem key={val.id} value={val.name.toLowerCase()}>
+                                    <ListItemText>  
+                                        {val.name.toLowerCase()} 
+                                    </ListItemText>
                                 </MenuItem>
                             ))}
                         </Custom_Textfield>
@@ -453,6 +496,18 @@ const success = () => {
 
 
                         </Grid>
+                    </Grid>
+
+                  {/* Custom Size */}
+                    <Grid item xs={12} md={12}>
+                        <Custom_Textfield 
+                        fullWidth 
+                        type='number' 
+                        label='Custom Size'
+                        value={product.sizes}
+                        onChange={onChange_sizes}
+                        error={errors.empty}
+                        />
                     </Grid>
 
                     {/* Product price  */}

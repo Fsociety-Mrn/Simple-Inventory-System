@@ -97,6 +97,7 @@ export function user(){
 
 // Update user profile
 export function ProfileUpdate(displayName) {
+  
   updateProfile(auth.currentUser, {
     displayName: displayName 
   }).then((res) => {

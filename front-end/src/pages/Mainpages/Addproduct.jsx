@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Create ,imageUpload , url } from '../../AuthenticationCRUD/CRUD_firebase'
-
+import { db } from '../../AuthenticationCRUD/firebase'
+import {
+    collection,
+    getDocs
+  } from "firebase/firestore";
 
 
 // Components
@@ -10,21 +14,21 @@ import {
     Avatar,
     Button,
     Divider, 
-    FormControlLabel, 
-    FormGroup, 
     Grid, 
     Input, 
+    ListItemIcon, 
+    ListItemText, 
     MenuItem, 
     Snackbar, 
-    Switch, 
     Typography 
 } from '@mui/material'
 import { Custom_Textfield } from '../../components/Textfield'
 import { useNavigate } from 'react-router-dom'
-
+import SettingsIcon from '@mui/icons-material/Settings';
+import { AlertAdd , successAdd  , successEdit, AlertEdit , AlertDelete } from '../../components/Category_Dialog'
+import { successDlt }  from './Settings_Category'
 export let success_added = false
-
-export const category = [ // Gender
+export const category = [ // category
   {
     id: 0,
     label: 'DRESS'
@@ -74,11 +78,21 @@ const gender = [ // Gender
   {
     id: 1,
     label: 'Female'
-  }  
+  },
+  {
+    id: 2,
+    label: 'Unisex'
+  } 
 ]
 
+const [Category, setCategory] = React.useState([]) // caetgory
 
 const sizes = [ // Sizes
+  {
+    id: -1,
+    label: 'Not Aplicable',
+    value: 'Not Aplicable'
+  },
   {
     id: 0,
     label: 'extra small',
@@ -116,13 +130,18 @@ const sizes = [ // Sizes
   }
 ]
 
+const usersCollectionRef = collection(db, "Category"); // database
+const [added, setAdded] = useState(successAdd) // added success
+const [edidt, setEdidt] = useState(successEdit) // edit succes
+const [dlt, setDlt] = useState(successDlt) // Delete success
+
 const [product,setProduct] = useState(
     {
       image:"",
       name: "",
       description: '',
       category: '',
-      sizes: 'Large',
+      sizes: 'Not Aplicable',
       gender: 'Female',
       price: 0
     }
@@ -151,7 +170,18 @@ const uploadImage = e => {
 
 }
 
+// Read data
+useEffect(()=>{
 
+    getDocs(usersCollectionRef).then(
+    snapshop=>{
+        setCategory(
+        snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+      )
+    }
+  )
+
+},[])
 
 // Name
 const onChange_name = e => {
@@ -199,7 +229,7 @@ const onClick_create = e => {
                 String(e),
                 product.name,
                 product.description,
-                product.category,
+                product.category.toLowerCase(),
                 product.sizes,
                 product.gender,
                 product.price
@@ -213,13 +243,20 @@ const success = () => {
     navigate("/ViewProduct")
 }
 
-
+// setting category
+const caetgory_settings = () => {
+    navigate("/AddProduct/Settings_Category")
+}
   return (
     <div>
+
         <br/>
         <br/>
         <br/>
         <br/>
+        <AlertAdd open = {added} setOpen={setAdded} />
+        <AlertEdit open = {edidt} setOpen={setEdidt} />
+        <AlertDelete open = {dlt} setOpen={setDlt}/>
 {/* ERORR */}
         <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -237,6 +274,7 @@ const success = () => {
             Each field must not be left blank.
             </Alert>
         </Snackbar>
+
 {/* Warnnig */}
         <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -391,17 +429,34 @@ const success = () => {
                         label='Category' 
                         value={product.category}
                         onChange={onChange_category}
+                        // onClick={()=> setProduct({...product, category: ""})}
                         error={errors.empty}
-                        select>
-                            {category.map((val)=> (
-                                <MenuItem key={val.id} value={val.label}>
-                                    {val.label}
+                        select
+                        >
+                            <MenuItem onClick={caetgory_settings}>
+
+                                <ListItemText>
+                                    Category Settings
+                                </ListItemText>
+                                <ListItemIcon>
+                                    <SettingsIcon/>
+                                </ListItemIcon>
+                            </MenuItem>
+
+                            {Category?.map((val)=> (
+                                <MenuItem key={val.id} value={val.name.toLowerCase()}>
+
+                                    <ListItemText>  
+                                        {val.name.toLowerCase()} 
+                                    </ListItemText>
                                 </MenuItem>
+                            
                             ))}
+
                         </Custom_Textfield>
                     </Grid>
 
-                    {/* Category */}
+                    {/*  Sizes */}
                     <Grid item xs={12} md={12} sm={12}>
                         
                         <Grid container spacing={1}                 
@@ -450,6 +505,18 @@ const success = () => {
                         </Grid>
                     </Grid>
 
+                    {/* Custom Size */}
+                    <Grid item xs={12} md={12}>
+                        <Custom_Textfield 
+                        fullWidth 
+                        type='number' 
+                        label='Custom Size'
+                        value={product.sizes}
+                        onChange={onChange_sizes}
+                        error={errors.empty}
+                        />
+                    </Grid>
+
                     {/* Product price  */}
                     <Grid item xs={12} md={12} sm={12}>
                         <Typography variant='h6'> Product price</Typography>
@@ -468,7 +535,7 @@ const success = () => {
 
                 </Grid>
 
-                {/* Buttons      */}
+                {/* Buttons */}
                 <Grid
                 container
                 direction="column"

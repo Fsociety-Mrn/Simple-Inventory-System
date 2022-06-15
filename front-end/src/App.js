@@ -8,6 +8,9 @@ import ViewProduct from './pages/Mainpages/Viewproduct'
 import ViewArchive from './pages/Mainpages/ViewArchive'
 import ConfirmDelete from './components/ConfirmDelete'
 import AddOrder from './pages/Mainpages/AddOrder'
+import OrderList from './pages/Mainpages/OrderList'
+import EditOrder from './pages/Mainpages/EditOrder'
+import Settings_Category from './pages/Mainpages/Settings_Category'
 import './App.css';
 import {
   Routes,
@@ -73,6 +76,8 @@ function App() {
           <Route path="/Homepage" element={<Overview/>}/>
 
           {/* Products */}
+          
+          <Route path="/AddProduct/Settings_Category" element={<Settings_Category/>}/>
           <Route path="/AddProduct" element={<AddProduct/>}/>
           <Route path="/EditProduct" element={<EditProduct/>}/>
           <Route path="/ViewProduct" element={<ViewProduct/>}/>
@@ -80,7 +85,8 @@ function App() {
 
           {/* Orders */}
           <Route path='/AddOrder' element={<AddOrder/>}/>
-
+          <Route path='/EditOrder' element={<EditOrder/>}/>
+          <Route path='/OrderList' element={<OrderList/>}/>
 
           <Route path="*" element={<Navigate to="/Homepage"/>}/>
           <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>

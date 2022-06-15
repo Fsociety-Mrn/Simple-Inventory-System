@@ -69,6 +69,13 @@ const routeAddOrder = e =>{
 
 }
 
+// OrderList
+const routeOrderList = e =>{
+  e.preventDefault()
+  navigate("/OrderList") 
+
+}
+
   return (
     <div>    
 
@@ -182,7 +189,7 @@ const routeAddOrder = e =>{
           </ListItemButton> 
 
           {/* Order list */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeOrderList}>
             <ListItemIcon> 
               <ViewListIcon fontSize="medium" />
             </ListItemIcon>

@@ -1,6 +1,5 @@
 import { Alert, AlertTitle, Collapse, LinearProgress, Snackbar } from '@mui/material'
 import React, { useState } from 'react'
-
 export const LOADING_SNACKBAR = (open) => {
   return (
     <div>
@@ -19,15 +18,21 @@ export const LOADING_SNACKBAR = (open) => {
   )
 }
 
-export const SUCCESS_SNACKBAR = (open) => {
+export const SUCCESS_SNACKBAR = ({open,setOpen,message , Bol}) => {
   return (
     <div>
       <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       open={open}
       >  
-        <Alert open={open} close={open} variant='filled' severity="success" sx={{ width: '100%' }} >
-          Your profile is successfully updated!
+        <Alert open={open}   
+        onClose={()=>{
+          
+          setOpen(false)
+          
+        }} variant='filled' severity="success" sx={{ width: '100%' }} >
+          <AlertTitle>Success</AlertTitle>
+          {message}
         </Alert>
     </Snackbar>
     </div>

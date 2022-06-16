@@ -7,8 +7,11 @@ import EditProduct from './pages/Mainpages/EditProduct'
 import ViewProduct from './pages/Mainpages/Viewproduct'
 import ViewArchive from './pages/Mainpages/ViewArchive'
 import ConfirmDelete from './components/ConfirmDelete'
+import ORDER_ConfirmDelete from './components/ORDER_ConfirmDelete'
 import AddOrder from './pages/Mainpages/AddOrder'
 import OrderList from './pages/Mainpages/OrderList'
+import PendingList from './pages/Mainpages/PendingList'
+import CancelledList from './pages/Mainpages/CancelledList'
 import EditOrder from './pages/Mainpages/EditOrder'
 import Settings_Category from './pages/Mainpages/Settings_Category'
 import './App.css';
@@ -87,9 +90,12 @@ function App() {
           <Route path='/AddOrder' element={<AddOrder/>}/>
           <Route path='/EditOrder' element={<EditOrder/>}/>
           <Route path='/OrderList' element={<OrderList/>}/>
-
+          <Route path='/PendingList' element={<PendingList/>}/>
+          <Route path='/CancelledList' element={<CancelledList/>}/>
+          
           <Route path="*" element={<Navigate to="/Homepage"/>}/>
           <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>
+          <Route path="/ORDER_ConfirmDelete" element={<ORDER_ConfirmDelete/>}/>
         </Route>
 
       </Routes>

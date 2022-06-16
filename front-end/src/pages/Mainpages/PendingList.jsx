@@ -20,7 +20,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { useNavigate } from 'react-router-dom'
 
-const OrderList = () => {
+const PendingList = () => {
 
 // Intialize Variables
 const [orderSuccess,setOrderSucces] = useState(window.sessionStorage.getItem("added")) //suuccess added
@@ -166,9 +166,10 @@ let navigate = useNavigate(); //Naviagte
 useEffect(()=>{
       getDocs(usersCollectionRef).then(
       snapshop=>{
-        setRows(     
-          snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
-        )
+        const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
+        setRows(data?.filter(e=>e.status === "Pending"))
+       
+        
       }
     )
 },[])
@@ -181,8 +182,7 @@ const onClick_addOrder = () =>{
 // Paid
 const handleonClick_Paid = e => {
   e.preventDefault()
-  setTitle('Paid')
-  setFiltered('Paid')
+  navigate("/OrderList")
 }
 
 // All
@@ -274,13 +274,18 @@ const onCellClick = (param) => {
 {/* Order List */}
       <Grid item xs={12}>
         <Typography 
-        variant='h3'>{title} List</Typography> 
+        variant='h3'>Pending List</Typography> 
         <Divider />
       </Grid>
 
 
-      <Grid item xs={12} md={10} sm={12}>
-
+      <Grid item xs={12} md={11} sm={12}>
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={1}
+        >
         {/* seatch */}
           <Custom_Textfield 
           margin='normal' 
@@ -300,26 +305,15 @@ const onCellClick = (param) => {
           />
 
 
+</Stack>
       </Grid>
 
     {/* Add */}
       <Grid item xs={12} md={2}>
-        <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-        >
+     
 
-    {/* AddOrder */}
-          <Fab color='primary' onClick={onClick_addOrder} >
-            <PersonAddAltIcon/>
-          </Fab>
-    {/* Drafts */}
-          <Fab color='primary' >
-            <DraftsIcon/>
-          </Fab>
-        </Stack>
+
+
       </Grid>
 
     {/* All */}
@@ -330,22 +324,27 @@ const onCellClick = (param) => {
         alignItems="center"
         spacing={2}
         >
-          <Fab color='primary' onClick={handleonClick_All}>
-            all     
+
+    {/* AddOrder */}
+          <Fab color='primary' onClick={onClick_addOrder} >
+            <PersonAddAltIcon/>
           </Fab>
+
     {/* Paid */}
           <Fab color='primary' onClick={handleonClick_Paid} >
             <PaidOutlinedIcon/>
           </Fab>
 
-    {/* Pending */}
-          <Fab color='primary' onClick={()=>navigate("/PendingList")} >
-            <PendingIcon/>
-          </Fab>
     {/* CancelIcon */}
-          <Fab color='primary' onClick={()=>navigate("/CancelledList")} >
+          <Fab color='primary' onClick={()=>navigate('/CancelledList')} >
             <CancelIcon/>
           </Fab>
+
+    {/* Drafts */}
+          <Fab color='primary' >
+            <DraftsIcon/>
+          </Fab>
+
         </Stack>    
 
       </Grid>   
@@ -379,4 +378,4 @@ const onCellClick = (param) => {
   )
 }
 
-export default OrderList
+export default PendingList

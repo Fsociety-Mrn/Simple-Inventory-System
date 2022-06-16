@@ -76,6 +76,20 @@ const routeOrderList = e =>{
 
 }
 
+// Pending List
+const routePendingList = e =>{
+  e.preventDefault()
+  navigate("/PendingList") 
+
+}
+
+// Cancel List
+const routeCanceledList = e =>{
+  e.preventDefault()
+  navigate("/CancelledList") 
+
+}
+
   return (
     <div>    
 
@@ -146,21 +160,20 @@ const routeOrderList = e =>{
             <Divider/>
           </Grid>
 
-          
-          {/* View Products */}       
-          <ListItemButton onClick={routeViewProduct} >
-            <ListItemIcon> 
-              <ShoppingCartIcon fontSize="medium" />
-            </ListItemIcon>
-            <ListItemText> View Products</ListItemText>
-          </ListItemButton>
-
           {/* Add Products */}       
           <ListItemButton onClick={routeAddProduct}>
             <ListItemIcon> 
               <AddIcon fontSize="medium" />
             </ListItemIcon>
             <ListItemText> Add Products</ListItemText>
+          </ListItemButton>
+        
+          {/* View Products */}       
+          <ListItemButton onClick={routeViewProduct} >
+            <ListItemIcon> 
+              <ShoppingCartIcon fontSize="medium" />
+            </ListItemIcon>
+            <ListItemText> View Products</ListItemText>
           </ListItemButton>
 
           {/* Archive Products */}       
@@ -197,7 +210,7 @@ const routeOrderList = e =>{
           </ListItemButton>
 
           {/* Pending order */}       
-          <ListItemButton>
+          <ListItemButton onClick={routePendingList}>
             <ListItemIcon> 
               <PendingIcon fontSize="medium" />
             </ListItemIcon>
@@ -205,12 +218,12 @@ const routeOrderList = e =>{
           </ListItemButton>
 
           {/* Cancelled order */}       
-          <ListItemButton>
+          <ListItemButton onClick={routeCanceledList                                                      }>
             <ListItemIcon> 
               <CancelIcon fontSize="medium" />
             </ListItemIcon>
             <ListItemText> Cancelled order</ListItemText>
-          </ListItemButton> 
+          </ListItemButton>                      
 
           {/* Draft orders*/}       
           <ListItemButton>

@@ -28,6 +28,8 @@ export const SUCCESS_SNACKBAR = ({open,setOpen,message , Bol}) => {
         <Alert open={open}   
         onClose={()=>{
           
+          window.sessionStorage.removeItem("added")
+          window.sessionStorage.removeItem("delete")
           setOpen(false)
           
         }} variant='filled' severity="success" sx={{ width: '100%' }} >

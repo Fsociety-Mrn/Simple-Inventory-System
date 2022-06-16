@@ -105,7 +105,10 @@ useEffect(()=>{
   return (
     <div>
 {/* Appbar */}
-      <Appar onClick={onClick_AppBar} position='fixed' open={open}  >
+      <Appar onClick={onClick_AppBar} onClose={()=>{
+        setAnchorEl(null)
+        onClick_AppBar()
+        }} position='fixed' open={open}  >
 
         <Toolbar variant='dense'>
 

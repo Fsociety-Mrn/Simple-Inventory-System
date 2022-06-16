@@ -10,8 +10,8 @@ import {
 
 
 const usersCollectionRef = collection(db, "Product"); //Product
-const usersCollectionRef_Order = collection(db, "Order"); //Order
 const usersCollectionRef_archive = collection(db, "ArchiveProduct"); //Archive product
+const usersCollectionRef_Order = collection(db, "Order"); //Order
 const storage = getStorage();
 
 // Create 
@@ -99,11 +99,6 @@ export const Retrieve_From_archive = (data) => {
 
 }
 
-// Create Order
-// const navi = (url) => {
-//     let navigate = useNavigate(); 
-//     navigate(url)
-// }
 export const CreateOrder = (data) => {
 
     try {
@@ -156,13 +151,47 @@ export const update = async (
 
 }
 
+
+// Update Order
+export const updateOrder = async (data) =>{
+    try{
+        console.log(data)
+        const useDoc = doc(db, "Order" , data.id)
+        const updates = async () => {
+            await updateDoc(useDoc,data)
+        }
+        updates()
+        return false
+    }catch(e){
+        console.log(e)
+        return true
+    }
+
+}
+
+
 // Delete
 
 // delete productr
-
 const deleteProduct = async (id) => {
     const userDoc = doc(db, "Product", id);
     await deleteDoc(userDoc);
+  };
+
+//   delete Order
+export const deleteOrder = (id) => {
+    try{
+        const userDoc = doc(db, "Order", id);
+        const delte = async () =>{
+            await deleteDoc(userDoc);  
+        }
+        delte()
+        return false
+    }catch(e){
+        return true
+    }
+   
+
   };
 
 export  const deleteArchive = async (id,url) => {

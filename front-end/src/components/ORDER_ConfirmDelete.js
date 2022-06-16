@@ -1,8 +1,8 @@
 import {  Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { dataID ,dataURL} from './Dialoglogout'
-import { deleteArchive } from '../AuthenticationCRUD/CRUD_firebase'
+
+import { deleteOrder } from '../AuthenticationCRUD/CRUD_firebase'
 
 export let deleted = false
 
@@ -35,17 +35,21 @@ const ConfirmDelete = () => {
 
         <Button variant='contained' onClick={()=>{
             //deleteImage('https://firebasestorage.googleapis.com/v0/b/laclothing-78c1f.appspot.com/o/Product%2F1654441225259received_1335567356952066.webp?alt=media&token=aef5dec3-db5a-4202-b531-9d1709cd54b6')
-            deleteArchive(dataID,dataURL)
-            deleted = true
-            navigate("/ViewArchive")}
+            if (!deleteOrder(window.sessionStorage.getItem("key")))
+            {
+              window.sessionStorage.removeItem("key")
+              window.sessionStorage.setItem("delete", true);
+              navigate("/OrderList")
+            }
+
+            }
         }>
           yes
         </Button>
      
         <Button variant='contained' onClick={()=>{
-          // data_shgow = false
-          navigate("/ViewArchive")
-          setOpen(false)
+          window.sessionStorage.removeItem("key")
+          navigate("/OrderList")
         }}>
           cancel
         </Button>

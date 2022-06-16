@@ -99,7 +99,7 @@ useEffect(()=>{
     setPurchase([...purchase,{
       'Product_name' : "",
       'Product_Quantity': 0,
-      'Description' : "",
+      'Description' : "None",
       'total_payment' : 0
     }])
   }
@@ -169,14 +169,14 @@ const handleChange_ProQuan = async(key,e) =>{
 
   // Mode
   const handleChange_CusStat = e => {
-    setOrder({...Order, Mode: e.target.value })
+    setOrder({...Order,Status : e.target.value })
   }
 
   // Status
   const handleChange_CusMode = e => {
-    setOrder({...Order, Status: e.target.value })
+    setOrder({...Order, Mode : e.target.value })
   }
-
+  
   // Add Order
   const handleOnlick_Order = async(e) =>{
     e.preventDefault()
@@ -202,9 +202,10 @@ const handleChange_ProQuan = async(key,e) =>{
         'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
         'Description' : String(purchase?.map(e=>e.Description)),
         'status' : Order.Status,
+        'Mode' : Order.Mode,
         'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
       })
-      success_added=true
+      window.sessionStorage.setItem("added", true);
       return navigate('/OrderList') 
 
      }
@@ -327,8 +328,7 @@ const handleChange_ProQuan = async(key,e) =>{
             label='Mode of Payment' 
             select
             value={Order.Mode}
-            onChange={handleChange_CusStat}
-          
+            onChange={handleChange_CusMode}
             >
               {modePay.map((e,key)=>(
               
@@ -348,7 +348,7 @@ const handleChange_ProQuan = async(key,e) =>{
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
               value={Order.Status}
-              onChange={handleChange_CusMode}
+              onChange={handleChange_CusStat}
               >
                 <FormControlLabel value="Paid" control={<Radio />} label="Paid" />
                 <FormControlLabel value="Pending" control={<Radio  />} label="Pending" />

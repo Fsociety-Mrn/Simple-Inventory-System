@@ -1,6 +1,6 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, ListItemText, Stack } from '@mui/material'
 
-import React from 'react'
+import React, { useState } from 'react'
 import {logout} from '../AuthenticationCRUD/firebase'
 import {Create_archive , Retrieve_From_archive , deleteArchive} from '../AuthenticationCRUD/CRUD_firebase'
 
@@ -60,11 +60,7 @@ export const DialogSuccessAdded = ({ open, setOpen, data={}}) =>{
     
     
     >
-      <DialogTitle variant='h5' color='black' style={{
-        backgroundColor: '#FAEBCD'
-      }} >
-        {data.name}
-      </DialogTitle>
+    
 
       <DialogContent style={{
         backgroundColor: '#FAEBCD'
@@ -80,7 +76,19 @@ export const DialogSuccessAdded = ({ open, setOpen, data={}}) =>{
           maxWidth: '400px',
           height: 'auto'
         }}/>
+        <DialogTitle variant='h5' color='black' style={{
+          backgroundColor: '#FAEBCD'
+        }}>
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          >
+            {data.name}
+          </Stack>
         
+      </DialogTitle>
         <DialogContentText variant='h6' color='black'>
           Description:
         </DialogContentText>
@@ -144,7 +152,7 @@ export const DialogSuccessAdded = ({ open, setOpen, data={}}) =>{
 }
 
 
-
+// archive
 export let successRetrieve = false
 export const ArchiveDialog = ({ open, setOpen, data={}}) =>{
   let navigate = useNavigate(); //Naviagte
@@ -161,11 +169,6 @@ return(
     
     
     >
-      <DialogTitle variant='h5' color='black' style={{
-        backgroundColor: '#FAEBCD'
-      }} >
-        {data.name}
-      </DialogTitle>
 
       <DialogContent style={{
         backgroundColor: '#FAEBCD'
@@ -181,7 +184,22 @@ return(
           maxWidth: '400px',
           height: 'auto'
         }}/>
-        
+
+        <DialogContentText variant='h6' color='black'>
+            <DialogTitle variant='h5' color='black' style={{
+            backgroundColor: '#FAEBCD'
+            }} >
+              <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+              >
+                {data.name}
+              </Stack>
+            </DialogTitle>
+        </DialogContentText>
+
         <DialogContentText variant='h6' color='black'>
           Description:
         </DialogContentText>
@@ -254,56 +272,161 @@ return(
 )
 }
 
-export const OrderViewDialog = ({setOpen, open=true}) => {
+
+// for order details
+export let dataExports = {}
+export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
+
+  const purchase =  data.purchase?.split(',')
+  const Quantity =  data.Quantity?.split(',')
+  const Description =  data.Description?.split(',')
+  dataExports = data
   let navigate = useNavigate(); //Naviagte
+
   return(
     <>
     
     <Dialog
-    // fullScreen={fullScreen}
     open={open}
     scroll='paper'
+ 
     onClose={()=>setOpen(false)}
-    
-    
     >
-      <DialogTitle variant='h5' color='black' style={{
+
+      {/* Customer Name */}
+      <DialogTitle
+      onClick={()=>setOpen(false)}
+      variant='h5' color='black' style={{
         backgroundColor: '#FAEBCD'
       }} >
-        Name
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          >
+            {data.name}
+          </Stack>
+
       </DialogTitle>
 
       <DialogContent style={{
         backgroundColor: '#FAEBCD'
-      
       }}
-      
+      onClick={()=>setOpen(false)}
       >
-
-        
+        {/* Email */}
         <DialogContentText variant='h6' color='black'>
-          Description:
-        </DialogContentText>
-        <DialogContentText variant='subtitle1' color='black'>
-          Description
-        </DialogContentText>
-                
-        <DialogContentText variant='h6' color='black'>
-          Category:         
-        </DialogContentText>
-        <DialogContentText variant='subtitle1' color='black'> asds </DialogContentText>
-
-
-        <DialogContentText variant='h6' color='black'>
-          Sizes: Description
+          Email: <strong>{data.email}</strong>
         </DialogContentText>
 
+        {/* Location */}
         <DialogContentText variant='h6' color='black'>
-          Gender: Description
+          Location:  {data.location} 
         </DialogContentText>
 
+        {/* Date */}      
+        <DialogContentText variant='h6'  color='black'>
+          Date: {data.date}       
+        </DialogContentText>
+
+        {/* Payment Status */}
         <DialogContentText variant='h6' color='black'>
-          prices: Description
+          Payment Status: <strong> {data.status} </strong>   
+        </DialogContentText>
+
+        {/* Mode Of Payment */}
+        <DialogContentText variant='h6' color='black'>
+          Mode Of Payment: {data.Mode} 
+        </DialogContentText>
+
+        <DialogContentText color='black'>
+          <Divider />
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          >
+
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Purchase
+              </ListItemText>
+              {purchase?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+             
+            </Stack>
+    
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Description
+              </ListItemText>
+              {Description?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+            {/* Quantity */}
+            <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Quantity
+              </ListItemText>
+              {Quantity?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+            {/* Total Price */}
+            {/* <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText variant=''>
+              Total Price 
+              </ListItemText>
+              <ListItemText>
+                1
+              </ListItemText>
+              <ListItemText>
+                1
+              </ListItemText>
+            </Stack> */}
+
+          </Stack>
+          <br/>
+          <Divider />
+        </DialogContentText>
+
+        {/* Total Payment */}
+        <DialogContentText variant='h6'  padding={1} color='black'>
+          Total Payment: <strong> {data.TotalPayment} </strong>
         </DialogContentText>
       </DialogContent>
 
@@ -313,22 +436,6 @@ export const OrderViewDialog = ({setOpen, open=true}) => {
       style={{
         backgroundColor: '#FAEBCD',
           }}>
-        <Button 
-
-        variant='outlined'
-        startIcon={<DeleteIcon/>}   
-        size='medium' 
-        color='error'
-        onClick={()=>{
-          // deleteArchive(data.id)
-          setOpen(false)
-          // MoeArchive(true)
-          navigate("/ConfirmDelete")
-
-        }}
-        >
-          Delete
-        </Button>
 
         <Button  
         variant='contained'
@@ -337,14 +444,11 @@ export const OrderViewDialog = ({setOpen, open=true}) => {
         autoFocus 
         onClick={()=>
           {
-             
-            setOpen(false)
-            // successRetrieve = true
-            navigate("/ViewProduct") 
+            navigate('/EditOrder')
           }
         } 
         >
-          Retrieve
+          Edit Product
         </Button>
 
       </DialogActions>

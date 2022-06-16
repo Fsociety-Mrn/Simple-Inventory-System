@@ -28,33 +28,44 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Custom_Textfield } from '../../components/Textfield'
 import moment from 'moment'
 import { ERROR_SNACKBAR } from '../../components/SnackbarAlert'
-import { CreateOrder } from '../../AuthenticationCRUD/CRUD_firebase'
+import { CreateOrder , updateOrder} from '../../AuthenticationCRUD/CRUD_firebase'
+import { dataExports } from '../../components/Dialoglogout'
+
 
 // Icons or Images
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import UpdateIcon from '@mui/icons-material/Update';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from 'react-router-dom';
 
+
+// Breaking data purchase
+const breaking = (data) => {
+  const purchase =  data.purchase?.split(',')
+  const Quantity =  data.Quantity?.split(',')
+  const Description =  data.Description?.split(',')
+
+  return [...Array(purchase.length)]?.map(
+    (_ , i) => ({
+      Product_name: purchase[i],
+      Product_Quantity: Quantity[i],
+      Description: Description[i],
+      total_payment: 0
+    })
+  )
+
+}
 
 const EditOrder = () => {
 //Initialize Variables 
   const usersCollectionRef = collection(db, "Product"); // database
   const [product,setProduct] = useState([])
-  const [value, setValue] = useState(new Date()); // Date
-  const [purchase,setPurchase] = useState([]) //Purchase
-  const [Order,setOrder] = useState({
-    'name' : '',
-    'email' : '',
-    'location' : '',
-    'date' : new Date(),
-    'Mode' : "GCASH",
-    'Status' : 'Paid',
-    // 'Purchase' : [],
-    // 'Quantity' : [],
-    // 'Description' : []
-  })
-  
+  const [value, setValue] = useState(new Date(dataExports.date)); // Date
+  const [Order,setOrder] = useState(dataExports)
+  const [purchase,setPurchase] = useState(breaking(Order)) //Purchase
+  let navigate = useNavigate(); //Naviagte
   const modePay = [
     {
       label: 'GCASH'
@@ -70,10 +81,11 @@ const EditOrder = () => {
 
 // Initialize Function
 
+
+
+
 // Get Product data
 useEffect(()=>{
-
-  // const aoc = () => {
       getDocs(usersCollectionRef)
       .then(
       snapshop=>{
@@ -82,9 +94,7 @@ useEffect(()=>{
         )
       }
     )
-  // }
-  
-//  return aoc()
+
 },[])
 
 
@@ -162,6 +172,7 @@ const handleChange_ProQuan = async(key,e) =>{
   const handleChange = (newValue) => {
     setValue(newValue);
     setOrder({...Order,date: moment(newValue,"mm-dd-yyyy").format().split('T')[0] })
+    
   };
 
   // Mode
@@ -186,19 +197,25 @@ const handleChange_ProQuan = async(key,e) =>{
       purchase: String(purchase?.map(e=>e.Product_name)),
 
      })
-
+     console.log(Order.status)
      if (valid && quanti !== true) 
      {
-      CreateOrder({
+      // updateOrder
+      updateOrder({
+        'id' : Order.id,
         'name' : Order.name,
         'email': Order.email,
+        'date' : String(Order.date),
         'location': Order.location,
         'purchase': String(purchase?.map(e=>e.Product_name)),
         'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
         'Description' : String(purchase?.map(e=>e.Description)),
+        'status' : Order.status,
+        'Mode' : Order.Mode,
         'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
       })
-      return setError(false)
+      setError(false)
+      return navigate('/OrderList') 
      }
      console.log('may error')
      return setError(true)
@@ -232,6 +249,26 @@ const handleChange_ProQuan = async(key,e) =>{
         <Divider />
       </Grid>
 
+      {/* Goback */}
+      <Grid item xs={12}>
+        <Stack
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        
+        spacing={3}
+        marginRight={2}
+        >
+          <Fab 
+          color='primary'
+          onClick={()=>navigate("/OrderList") }
+          >
+          <ArrowBackIcon />
+        </Fab>
+        </Stack>
+   
+      </Grid>
+
 {/* Add Customer Details */}
       <Grid item xs={12} md={8}>
         <Grid
@@ -251,7 +288,6 @@ const handleChange_ProQuan = async(key,e) =>{
         paddingLeft={1}
         spacing={2}
         >
-          <Button onClick={()=> console.log(moment(value,"mm-dd-yyyy").format().split('T')[0])}>click me</Button>
           <Grid item xs={12}>
             <Typography variant='h5'>Customer Details</Typography>
           </Grid>
@@ -320,8 +356,8 @@ const handleChange_ProQuan = async(key,e) =>{
             label='Mode of Payment' 
             select
             value={Order.Mode}
-            onChange={handleChange_CusStat}
-          
+            onChange={handleChange_CusMode}
+            
             >
               {modePay.map((e,key)=>(
               
@@ -332,6 +368,7 @@ const handleChange_ProQuan = async(key,e) =>{
               ))}
             </Custom_Textfield>
           </Grid>
+
 {/* Status payment */}
           <Grid item xs={12} md={4}>
             <FormControl>
@@ -340,8 +377,8 @@ const handleChange_ProQuan = async(key,e) =>{
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              value={Order.Status}
-              onChange={handleChange_CusMode}
+              value={Order.status}
+              onChange={handleChange_CusStat}
               >
                 <FormControlLabel value="Paid" control={<Radio />} label="Paid" />
                 <FormControlLabel value="Pending" control={<Radio  />} label="Pending" />
@@ -531,9 +568,9 @@ const handleChange_ProQuan = async(key,e) =>{
                   borderRadius: '15px',
 
                 }}
-                startIcon={<AddShoppingCartIcon />}
+                startIcon={<UpdateIcon />}
                 onClick={handleOnlick_Order}
-                >Add Order
+                >Update
                 </Button>
                 <Button 
                 variant='contained' 

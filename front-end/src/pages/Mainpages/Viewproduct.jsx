@@ -49,6 +49,8 @@ const [opens,setOpens] = useState(false) //View Image
 const [dataProduct,setDataProduct] = useState() 
 const [retrieve,setRetrieve] = useState(successRetrieve)
 const [ category , setCategory] = useState([])
+
+
 // Initiliaze function
 
 // fetch data
@@ -71,9 +73,6 @@ useEffect(()=>{
         )
       }
     )
-  // }
-  
-//  return aoc()
 },[])
 
 // Close success

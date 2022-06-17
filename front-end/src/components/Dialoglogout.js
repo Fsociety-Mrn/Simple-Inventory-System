@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, ListItemText, Stack } from '@mui/material'
-
+import { RetrieveDraft } from '../AuthenticationCRUD/CRUD_firebase'
 import React, { useState } from 'react'
 import {logout} from '../AuthenticationCRUD/firebase'
 import {Create_archive , Retrieve_From_archive , deleteArchive} from '../AuthenticationCRUD/CRUD_firebase'
@@ -275,6 +275,7 @@ return(
 
 // for order details
 export let dataExports = {}
+
 export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
 
   const purchase =  data.purchase?.split(',')
@@ -401,24 +402,6 @@ export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
               ))}
             </Stack>
 
-            {/* Total Price */}
-            {/* <Stack
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-            >
-              <ListItemText variant=''>
-              Total Price 
-              </ListItemText>
-              <ListItemText>
-                1
-              </ListItemText>
-              <ListItemText>
-                1
-              </ListItemText>
-            </Stack> */}
-
           </Stack>
           <br/>
           <Divider />
@@ -449,6 +432,171 @@ export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
         } 
         >
           Edit Product
+        </Button>
+
+      </DialogActions>
+    </Dialog>  
+    </>
+  )
+}
+
+export const DraftViewDialog = ({setOpen, open=false , data={}}) => {
+
+  const purchase =  data.purchase?.split(',')
+  const Quantity =  data.Quantity?.split(',')
+  const Description =  data.Description?.split(',')
+  dataExports = data
+  let navigate = useNavigate(); //Naviagte
+
+  return(
+    <>
+    
+    <Dialog
+    open={open}
+    scroll='paper'
+ 
+    onClose={()=>setOpen(false)}
+    >
+
+      {/* Customer Name */}
+      <DialogTitle
+      onClick={()=>setOpen(false)}
+      variant='h5' color='black' style={{
+        backgroundColor: '#FAEBCD'
+      }} >
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          >
+            {data.name}
+          </Stack>
+
+      </DialogTitle>
+
+      <DialogContent style={{
+        backgroundColor: '#FAEBCD'
+      }}
+      onClick={()=>setOpen(false)}
+      >
+        {/* Email */}
+        <DialogContentText variant='h6' color='black'>
+          Email: <strong>{data.email}</strong>
+        </DialogContentText>
+
+        {/* Location */}
+        <DialogContentText variant='h6' color='black'>
+          Location:  {data.location} 
+        </DialogContentText>
+
+        {/* Date */}      
+        <DialogContentText variant='h6'  color='black'>
+          Date: {data.date}       
+        </DialogContentText>
+
+        {/* Payment Status */}
+        <DialogContentText variant='h6' color='black'>
+          Payment Status: <strong> {data.status} </strong>   
+        </DialogContentText>
+
+        {/* Mode Of Payment */}
+        <DialogContentText variant='h6' color='black'>
+          Mode Of Payment: {data.Mode} 
+        </DialogContentText>
+
+        <DialogContentText color='black'>
+          <Divider />
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          >
+
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Purchase
+              </ListItemText>
+              {purchase?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+             
+            </Stack>
+    
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Description
+              </ListItemText>
+              {Description?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+            {/* Quantity */}
+            <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Quantity
+              </ListItemText>
+              {Quantity?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+          </Stack>
+          <br/>
+          <Divider />
+        </DialogContentText>
+
+        {/* Total Payment */}
+        <DialogContentText variant='h6'  padding={1} color='black'>
+          Total Payment: <strong> {data.TotalPayment} </strong>
+        </DialogContentText>
+      </DialogContent>
+
+
+
+      <DialogActions 
+      style={{
+        backgroundColor: '#FAEBCD',
+          }}>
+
+        <Button  
+        variant='contained'
+        startIcon={<DriveFileMoveIcon/>}
+        size='medium'
+        autoFocus 
+        onClick={()=>
+          {
+            window.sessionStorage.setItem("key_draft", true);
+            if (!RetrieveDraft(data)) navigate("/OrderList")
+          }
+        } 
+        >
+          Retrieve Product
         </Button>
 
       </DialogActions>

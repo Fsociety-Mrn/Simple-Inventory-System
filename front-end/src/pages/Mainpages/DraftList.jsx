@@ -1,36 +1,36 @@
 // Components
-import { Divider, Fab, Grid, IconButton, InputAdornment, Paper, Stack, Typography } from '@mui/material'
+import { 
+  Divider, 
+  Fab, 
+  Grid,  
+  InputAdornment,  
+  Stack, 
+  Typography 
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { SUCCESS_SNACKBAR } from '../../components/SnackbarAlert'
-import { success_added } from './AddOrder'
 import { Custom_Textfield } from '../../components/Textfield'
 import { DataGrid } from '@mui/x-data-grid';
 import { db } from '../../AuthenticationCRUD/firebase'
 import { collection, getDocs } from "firebase/firestore";
-import { OrderViewDialog } from '../../components/Dialoglogout'
-
+import { DraftViewDialog } from '../../components/Dialoglogout'
+import { RetrieveDraft } from '../../AuthenticationCRUD/CRUD_firebase'
 
 // Icons or Images
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import PendingIcon from '@mui/icons-material/Pending';
-import CancelIcon from '@mui/icons-material/Cancel';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { useNavigate } from 'react-router-dom'
+import ReplyIcon from '@mui/icons-material/Reply';
 
 const PendingList = () => {
 
 // Intialize Variables
-const [orderSuccess,setOrderSucces] = useState(window.sessionStorage.getItem("added")) //suuccess added
-const usersCollectionRef = collection(db, "Order"); // database
+const [orderSuccess,setOrderSucces] = useState(window.sessionStorage.getItem("key_move")) //suuccess added
+const usersCollectionRef = collection(db, "Draft"); // database
 const [search,setSearch] = useState() //search 
 const [filter,setFiltered] = useState() //filtered
-const [title,setTitle] = useState('Order')
 const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
-const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
+
 
 // Column header
 const columns = [
@@ -130,8 +130,8 @@ const columns = [
 
 // Action
   { 
-    field: 'Action', 
-    headerName: 'Action', 
+    field: 'Retrieve', 
+    headerName: 'Retrieve', 
     width: 218,
     headerClassName: 'super-app-theme--header',
     headerAlign: 'center', 
@@ -145,8 +145,8 @@ const columns = [
         textAlign: "center"
       }}
       >
-        <Fab aria-label="delete" color='error' size='small'>
-          <DeleteForeverOutlinedIcon />
+        <Fab aria-label="delete" color='primary' size='small'>
+          <ReplyIcon />
         </Fab>
       </div>
       );
@@ -167,30 +167,11 @@ useEffect(()=>{
       getDocs(usersCollectionRef).then(
       snapshop=>{
         const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
-        setRows(data?.filter(e=>e.status === "Pending"))
-       
-        
+        setRows(data)      
       }
     )
 },[])
 
-// Routes
-const onClick_addOrder = () =>{
-  navigate('/AddOrder')
-}
-
-// Paid
-const handleonClick_Paid = e => {
-  e.preventDefault()
-  navigate("/OrderList")
-}
-
-// All
-const handleonClick_All = e => {
-  e.preventDefault()
-  setTitle('Order')
-  setFiltered('')
-}
 
 // Search data
 const onChange_Search = e => {
@@ -206,22 +187,18 @@ const search_data = () => {
 // Filter
 const filtered = () => {
 
-  if(filter)return rows?.filter(e=>e.status === filter)
+  if(filter) return rows?.filter(e=>e.status === filter)
   return rows
 }
 
-// Delete
-const DELETE = (param) => {
-  window.sessionStorage.setItem("key", "value");
-}
 
 // Oncell click
 const onCellClick = (param) => {
   switch (param.field) {
         // delete
-    case 'Action':
-      window.sessionStorage.setItem("key", param.row.id);
-      navigate("/ORDER_ConfirmDelete")
+    case 'Retrieve':
+      window.sessionStorage.setItem("key_draft", true);
+      if (!RetrieveDraft(param.row)) navigate("/OrderList")
     break;
     // case 'name' :
     //   alert(window.sessionStorage.getItem("key"))
@@ -241,24 +218,19 @@ const onCellClick = (param) => {
     <br/>
     <br/>
     {/* dialog */}
-    <OrderViewDialog 
+    <DraftViewDialog 
     setOpen={setOpenview}
     open={openView} 
     data={view}
+
     />
     {/* Order Added */}
     <SUCCESS_SNACKBAR 
     setOpen={setOrderSucces} 
     open={orderSuccess}  
-    message='order was successfully added'
+    message='Data succesfully move to draft!'
     />
 
-    {/* success deleted*/}
-    <SUCCESS_SNACKBAR 
-    setOpen={setDeletesuccess} 
-    open={deleteSuccess}  
-    message='Succesfful deleted'
-    />
     
     <Grid
     container
@@ -274,7 +246,7 @@ const onCellClick = (param) => {
 {/* Order List */}
       <Grid item xs={12}>
         <Typography 
-        variant='h3'>Pending List</Typography> 
+        variant='h3'>Draft Orders</Typography> 
         <Divider />
       </Grid>
 
@@ -308,46 +280,6 @@ const onCellClick = (param) => {
 </Stack>
       </Grid>
 
-    {/* Add */}
-      <Grid item xs={12} md={2}>
-     
-
-
-
-      </Grid>
-
-    {/* All */}
-      <Grid item xs={12} md={12}>
-        <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        >
-
-    {/* AddOrder */}
-          <Fab color='primary' onClick={onClick_addOrder} >
-            <PersonAddAltIcon/>
-          </Fab>
-
-    {/* Paid */}
-          <Fab color='primary' onClick={handleonClick_Paid} >
-            <PaidOutlinedIcon/>
-          </Fab>
-
-    {/* CancelIcon */}
-          <Fab color='primary' onClick={()=>navigate('/CancelledList')} >
-            <CancelIcon/>
-          </Fab>
-
-    {/* Drafts */}
-          <Fab color='primary' onClick={()=>navigate("/DraftList")} >
-            <DraftsIcon/>
-          </Fab>
-
-        </Stack>    
-
-      </Grid>   
 
 
 {/* Table */}

@@ -12,6 +12,7 @@ import {
 const usersCollectionRef = collection(db, "Product"); //Product
 const usersCollectionRef_archive = collection(db, "ArchiveProduct"); //Archive product
 const usersCollectionRef_Order = collection(db, "Order"); //Order
+const usersCollectionRef_Draft = collection(db, "Draft"); //Order
 const storage = getStorage();
 
 // Create 
@@ -84,14 +85,14 @@ export const Create_archive = (data) => {
     }
 }
 
-// Create archive
+// retrive
 export const Retrieve_From_archive = (data) => {
     try {
         const createData = async () => {
             await addDoc(usersCollectionRef,data)
         }
-        createData()
-        deleteArchive(data.id)
+        createData() // craete data
+        deleteArchive(data.id) //delete data
         return console.log("Goods nag create ng archive")
     }catch(e){
         return console.log("Awts di nag create huhu bells")
@@ -99,6 +100,7 @@ export const Retrieve_From_archive = (data) => {
 
 }
 
+// Create order
 export const CreateOrder = (data) => {
 
     try {
@@ -106,7 +108,7 @@ export const CreateOrder = (data) => {
             await addDoc(usersCollectionRef_Order,data)
         }
         createData()
-        return console.log("Goods nag create ng archive")
+        return console.log("Goods nag create ng order")
     }catch(e){
         console.error(e)
         return console.log("Awts di nag create huhu bells")
@@ -114,7 +116,19 @@ export const CreateOrder = (data) => {
 
 }
 
-
+// Create draft
+export const CreateDraft = (data) => {
+    try {
+        const createData = async () => {
+            await addDoc(usersCollectionRef_Draft,data)
+        }
+        createData()
+        return console.log("Goods nag create ng drfat")
+    }catch(e){
+        console.error(e)
+        return console.log("Awts di nag create huhu bells")
+    }
+}
 
 // Update
 
@@ -172,13 +186,42 @@ export const updateOrder = async (data) =>{
 
 // Delete
 
+// delete Draft
+export const moveToDraft = (data) => {
+    try{
+        deleteOrder(data.id)
+        CreateDraft(data)
+    }catch(e){
+        console.log("Awts di nag create huhu bells")
+    }
+}
+
+
+// Retrieve from draft
+export const RetrieveDraft = (data) => {
+    try{
+        const deleteDraft = async () => {
+            const userDoc = doc(db, "Draft", data.id);
+            await deleteDoc(userDoc);
+        }
+        CreateOrder(data)
+        deleteDraft()
+        console.log("Hala naretrieve")
+        return false
+    }catch(e){
+        console.log("Awts di nag create huhu bells")
+        return true
+    }
+}
+
+
 // delete productr
 const deleteProduct = async (id) => {
     const userDoc = doc(db, "Product", id);
     await deleteDoc(userDoc);
   };
 
-//   delete Order
+// delete Order
 export const deleteOrder = (id) => {
     try{
         const userDoc = doc(db, "Order", id);
@@ -194,6 +237,7 @@ export const deleteOrder = (id) => {
 
   };
 
+//delete archive
 export  const deleteArchive = async (id,url) => {
     const userDoc = doc(db, "ArchiveProduct", id);
     await deleteDoc(userDoc);
@@ -201,6 +245,7 @@ export  const deleteArchive = async (id,url) => {
   };
 
 
+//  delete image
 export const deleteImage = (url) => {
     const delte = ref(storage,url)
     // Delete the file

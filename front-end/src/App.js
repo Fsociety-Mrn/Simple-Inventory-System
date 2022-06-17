@@ -13,6 +13,7 @@ import OrderList from './pages/Mainpages/OrderList'
 import PendingList from './pages/Mainpages/PendingList'
 import CancelledList from './pages/Mainpages/CancelledList'
 import EditOrder from './pages/Mainpages/EditOrder'
+import DraftList from './pages/Mainpages/DraftList'
 import Settings_Category from './pages/Mainpages/Settings_Category'
 import './App.css';
 import {
@@ -92,7 +93,8 @@ function App() {
           <Route path='/OrderList' element={<OrderList/>}/>
           <Route path='/PendingList' element={<PendingList/>}/>
           <Route path='/CancelledList' element={<CancelledList/>}/>
-          
+          <Route path='/DraftList' element={<DraftList/>}/>
+
           <Route path="*" element={<Navigate to="/Homepage"/>}/>
           <Route path="/ConfirmDelete" element={<ConfirmDelete/>}/>
           <Route path="/ORDER_ConfirmDelete" element={<ORDER_ConfirmDelete/>}/>

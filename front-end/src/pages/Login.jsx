@@ -22,14 +22,12 @@ import Bing from '../images/Logo.png'
 import { Link } from "react-router-dom";
 
 
-
 const Test = () => {
 
 
 // Initialize Variables
 const [Login_details, setLogin_details] = useState({"username" : "","password" : ""}) //Login credentials
 const [error,setError] = useState(false) // Error
-
 
 
 

@@ -90,6 +90,10 @@ const routeCanceledList = e =>{
 
 }
 
+const routeDraftList = e =>{
+  e.preventDefault()
+  navigate("/DraftList") 
+}
   return (
     <div>    
 
@@ -218,7 +222,7 @@ const routeCanceledList = e =>{
           </ListItemButton>
 
           {/* Cancelled order */}       
-          <ListItemButton onClick={routeCanceledList                                                      }>
+          <ListItemButton onClick={routeCanceledList}>
             <ListItemIcon> 
               <CancelIcon fontSize="medium" />
             </ListItemIcon>
@@ -226,7 +230,7 @@ const routeCanceledList = e =>{
           </ListItemButton>                      
 
           {/* Draft orders*/}       
-          <ListItemButton>
+          <ListItemButton onClick={routeDraftList}>
             <ListItemIcon> 
               <DraftsIcon fontSize="medium" />
             </ListItemIcon>
@@ -239,7 +243,7 @@ const routeCanceledList = e =>{
           </Grid> 
 
           {/* Invoices*/}       
-          <ListItemButton>
+          <ListItemButton onClick={routeCanceledList}>
             <ListItemIcon> 
               <DescriptionIcon fontSize="medium" />
             </ListItemIcon>

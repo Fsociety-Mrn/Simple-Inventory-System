@@ -31,6 +31,7 @@ const [title,setTitle] = useState('Order')
 const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
 const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
+const [retrieveSuccess, setRetrievesuccess] = useState(window.sessionStorage.getItem("key_draft"))
 
 // Column header
 const columns = [
@@ -259,7 +260,14 @@ const onCellClick = (param) => {
     open={deleteSuccess}  
     message='Succesfful deleted'
     />
-    
+
+    {/* success retrieve*/}
+    <SUCCESS_SNACKBAR 
+    setOpen={setRetrievesuccess} 
+    open={retrieveSuccess}  
+    message='Data succesfully retrieve!'
+    />
+
     <Grid
     container
     direction="row"
@@ -316,7 +324,7 @@ const onCellClick = (param) => {
             <PersonAddAltIcon/>
           </Fab>
     {/* Drafts */}
-          <Fab color='primary' >
+          <Fab color='primary' onClick={()=>navigate("/DraftList")}>
             <DraftsIcon/>
           </Fab>
         </Stack>

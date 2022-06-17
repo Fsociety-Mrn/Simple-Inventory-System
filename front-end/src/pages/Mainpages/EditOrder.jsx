@@ -28,7 +28,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Custom_Textfield } from '../../components/Textfield'
 import moment from 'moment'
 import { ERROR_SNACKBAR } from '../../components/SnackbarAlert'
-import { CreateOrder , updateOrder} from '../../AuthenticationCRUD/CRUD_firebase'
+import { moveToDraft , updateOrder} from '../../AuthenticationCRUD/CRUD_firebase'
 import { dataExports } from '../../components/Dialoglogout'
 
 
@@ -216,6 +216,43 @@ const handleChange_ProQuan = async(key,e) =>{
       })
       setError(false)
       return navigate('/OrderList') 
+     }
+     console.log('may error')
+     return setError(true)
+  }
+
+  // Save to draft
+  const handleOnlick_Draft = async(e) =>{
+    e.preventDefault()
+
+
+    const valid = await addOrderSchema.isValid({
+      name: Order.name,
+      email: Order.email,
+      location: Order.location,
+      purchase: String(purchase?.map(e=>e.Product_name)),
+
+     })
+     console.log(Order.status)
+     if (valid && quanti !== true) 
+     {
+      // updateOrder
+      moveToDraft({
+        'id' : Order.id,
+        'name' : Order.name,
+        'email': Order.email,
+        'date' : String(Order.date),
+        'location': Order.location,
+        'purchase': String(purchase?.map(e=>e.Product_name)),
+        'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
+        'Description' : String(purchase?.map(e=>e.Description)),
+        'status' : Order.status,
+        'Mode' : Order.Mode,
+        'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
+      })
+      setError(false)
+      window.sessionStorage.setItem("key_move", true);
+      return navigate('/DraftList') 
      }
      console.log('may error')
      return setError(true)
@@ -578,6 +615,7 @@ const handleChange_ProQuan = async(key,e) =>{
                   borderRadius: '15px',
                 }}
                 startIcon={<DraftsIcon />}
+                onClick={handleOnlick_Draft}
                 >Save to Draft</Button>
               </Stack>
             </Grid> 

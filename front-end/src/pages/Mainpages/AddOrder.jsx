@@ -28,7 +28,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Custom_Textfield } from '../../components/Textfield'
 import moment from 'moment'
 import { ERROR_SNACKBAR } from '../../components/SnackbarAlert'
-import { CreateOrder } from '../../AuthenticationCRUD/CRUD_firebase'
+import { CreateOrder , CreateDraft } from '../../AuthenticationCRUD/CRUD_firebase'
 
 // Icons or Images
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -207,6 +207,42 @@ const handleChange_ProQuan = async(key,e) =>{
       })
       window.sessionStorage.setItem("added", true);
       return navigate('/OrderList') 
+
+     }
+     console.log('may error')
+     return setError(true)
+  }
+
+  // Add Draft
+  const handleOnlick_Draft = async(e) =>{
+    e.preventDefault()
+
+
+    const valid = await addOrderSchema.isValid({
+      name: Order.name,
+      email: Order.email,
+      location: Order.location,
+      purchase: String(purchase?.map(e=>e.Product_name)),
+
+     })
+        
+     if (valid && quanti !== true) 
+     {
+      setError(false)
+      CreateDraft({
+        'name' : Order.name,
+        'email': Order.email,
+        'date' : String(Order.date),
+        'location': Order.location,
+        'purchase': String(purchase?.map(e=>e.Product_name)),
+        'Quantity' : String(purchase?.map(e=>e.Product_Quantity)),
+        'Description' : String(purchase?.map(e=>e.Description)),
+        'status' : Order.Status,
+        'Mode' : Order.Mode,
+        'TotalPayment' : parseInt(purchase?.reduce((a,b)=> a = parseInt(a) + parseInt(b.total_payment),0))
+      })
+      window.sessionStorage.setItem("added_draft", true);
+      return navigate('/DraftList') 
 
      }
      console.log('may error')
@@ -548,6 +584,7 @@ const handleChange_ProQuan = async(key,e) =>{
                   borderRadius: '15px',
                 }}
                 startIcon={<DraftsIcon />}
+                onClick={handleOnlick_Draft}
                 >Save to Draft</Button>
               </Stack>
             </Grid> 

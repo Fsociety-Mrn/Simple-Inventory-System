@@ -29,7 +29,10 @@ export const SUCCESS_SNACKBAR = ({open,setOpen,message , Bol}) => {
         onClose={()=>{
           
           window.sessionStorage.removeItem("added")
+          window.sessionStorage.removeItem("added_draft")
+          window.sessionStorage.removeItem("key_draft")
           window.sessionStorage.removeItem("delete")
+          window.sessionStorage.removeItem("key_move")
           setOpen(false)
           
         }} variant='filled' severity="success" sx={{ width: '100%' }} >

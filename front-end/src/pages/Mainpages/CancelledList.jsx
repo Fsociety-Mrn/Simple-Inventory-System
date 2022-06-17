@@ -167,9 +167,7 @@ useEffect(()=>{
       getDocs(usersCollectionRef).then(
       snapshop=>{
         const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
-        setRows(data?.filter(e=>e.status === "Canceled"))
-       
-        
+        setRows(data?.filter(e=>e.status === "Canceled"))      
       }
     )
 },[])
@@ -274,7 +272,7 @@ const onCellClick = (param) => {
 {/* Order List */}
       <Grid item xs={12}>
         <Typography 
-        variant='h3'>Cancel List</Typography> 
+        variant='h3'>Canceled List</Typography> 
         <Divider />
       </Grid>
 
@@ -341,7 +339,7 @@ const onCellClick = (param) => {
           </Fab>
 
     {/* Drafts */}
-          <Fab color='primary' >
+          <Fab color='primary'  onClick={()=>navigate("/DraftList")}  >
             <DraftsIcon/>
           </Fab>
 

@@ -20,13 +20,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import { db } from '../../AuthenticationCRUD/firebase'
 import { collection, getDocs } from "firebase/firestore";
 import { InvoicesViewDialog } from '../../components/Dialoglogout'
-
+import { CSVLink } from 'react-csv';
 
 // Icons or Images
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { useNavigate } from 'react-router-dom'
 import moment from 'moment';
+import { date } from 'yup';
 
 const PendingList = () => {
 
@@ -34,7 +35,7 @@ const PendingList = () => {
 const [orderSuccess,setOrderSucces] = useState(window.sessionStorage.getItem("added")) //suuccess added
 const usersCollectionRef = collection(db, "Order"); // database
 const [search,setSearch] = useState() //search 
-const [filter,setFiltered] = useState() //filtered
+const [filter,setFiltered] = useState("") //filtered
 const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
 const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
@@ -109,7 +110,40 @@ const [dates, setDates] = useState({
   'Years': ""
 })
 
-
+// headers fot excel
+const Headers = [
+  {
+    label : "name", key : "name"
+  },
+  {
+    label : "email", key : "email"
+  },
+  {
+    label : "Description", key : "Description"
+  },
+  {
+    label : "location", key: "location"
+  },
+  {
+    label : "date" , key: "date"
+  },
+  {
+    label : "Mode", key: "Mode"
+  },
+  {
+    label : "status", key: "status"
+  },
+  {
+    label : "purchase", key: "purchase"
+  },
+  {
+    label : "Quantity", key: "Quantity"
+  },
+  {
+    label : "TotalPayment", key :"TotalPayment"
+  }
+    
+]
 
 // Column header
 const columns = [
@@ -288,18 +322,10 @@ const filtered = () => {
   return rows
 }
 
+// filter deate
 const filter_date = () => {
  const datess = dates.Years + dates.Month + dates.Day
- console.log(datess)
- console.log(
-  filtered()?.
-  map(
-    e=>
-    String(
-      moment(new Date(e.date),"mm-dd-yyyy").format().split('T')[0]
-    ).replaceAll("-",""))
 
- )
  if (!datess) return filtered()
 
   return filtered()?.
@@ -391,9 +417,6 @@ const onCellClick = (param) => {
         <Typography 
         variant='h3'>Invoices</Typography> 
         <Divider />
-        <Button onClick={filter_date}>
-          click me
-        </Button>
       </Grid>
 
 
@@ -432,12 +455,12 @@ const onCellClick = (param) => {
       container 
       spacing={1}
       direction="row"
-      justifyContent="flex-start"
+      justifyContent="center"
       alignItems="center"
       >
      
         {/* status */}
-        <Grid item xs={12}>
+        <Grid item xs={12} md={12} sm={11}>
           <FormControl>
            <RadioGroup
             row
@@ -446,25 +469,16 @@ const onCellClick = (param) => {
             value={filter}
             onChange={handleChange}
             >
-              <FormControlLabel value=""  control={<Radio />} label="All" />
+              <FormControlLabel value="" control={<Radio />} label="All" />
               <FormControlLabel value="Delivered" control={<Radio />} label="Delivered" />
               <FormControlLabel value="Refunded" control={<Radio />} label="Refunded" />
             </RadioGroup>
           </FormControl>
         </Grid>
-
-
-         {/* Date */}
-         <Grid item xs={12} md={4} sm={12}>
-          <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={1}
-          >
-
-          {/* Year */}
-          <Autocomplete
+        
+         {/* Year */}
+        <Grid item xs={12} md={2} sm={4}>
+         <Autocomplete
           fullWidth
           name="searchYear"
           value={dates.Years}
@@ -472,16 +486,16 @@ const onCellClick = (param) => {
           options={Years}
           renderInput={(params) => 
           <Custom_Textfield 
-           
           value={dates.Years} 
           {...params} 
           label="Years" />
           }
           />
+        </Grid>
 
           {/* Month */}
+        <Grid item xs={12} md={2} sm={1}>
           <Autocomplete
-
           name="searchYear"
           value={dates.Month}
           onChange={(event, newValue) => changeMonth(newValue)}     
@@ -493,10 +507,12 @@ const onCellClick = (param) => {
           label="Month" />
           }
           />
+        </Grid>
+
+        <Grid item xs={12} md={2} sm={1}>
 
           {/* Day */}
           <Autocomplete
-
           name="searchYear"
           value={dates.Day}
           onChange={(event, newValue) => changeDay(newValue)}     
@@ -509,11 +525,21 @@ const onCellClick = (param) => {
           label="Day" />
           }
           />
-
-
-
-          </Stack>
         </Grid>
+
+        <Grid item xs={12}>
+          <Button variant='contained' >
+              <CSVLink
+              headers={Headers}
+              data={rows}
+              filename={"LAClothingCustomerDetails-" + String(moment(new Date(),"mm-dd-yyyy").format().split('T')[0]) + ".csv"}
+              style={{ textDecoration: "none", color: "#fff" }}
+              > 
+              Export data to PDF
+              </CSVLink>  
+          </Button>
+        </Grid>
+
       </Grid>
 
       </Grid>

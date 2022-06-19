@@ -173,16 +173,7 @@ useEffect(()=>{
     )
 },[usersCollectionRef])
 
-// Routes
-const onClick_addOrder = () =>{
-  navigate('/AddOrder')
-}
 
-// Paid
-const handleonClick_Paid = e => {
-  e.preventDefault()
-  navigate("/OrderList")
-}
 
 // Search data
 const onChange_Search = e => {
@@ -264,7 +255,7 @@ const onCellClick = (param) => {
 {/* Order List */}
       <Grid item xs={12}>
         <Typography 
-        variant='h3'>Canceled List</Typography> 
+        variant='h3'>Invoices</Typography> 
         <Divider />
       </Grid>
 
@@ -298,46 +289,15 @@ const onCellClick = (param) => {
 </Stack>
       </Grid>
 
-    {/* Add */}
-      <Grid item xs={12} md={2}>
+    {/* Date */}
+      <Grid item xs={12} md={12}>
      
 
 
 
       </Grid>
 
-    {/* All */}
-      <Grid item xs={12} md={12}>
-        <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        >
-
-    {/* AddOrder */}
-          <Fab color='primary' onClick={onClick_addOrder} >
-            <PersonAddAltIcon/>
-          </Fab>
-
-    {/* Paid */}
-          <Fab color='primary' onClick={handleonClick_Paid} >
-            <PaidOutlinedIcon/>
-          </Fab>
-
-    {/* Pending */}
-          <Fab color='primary' onClick={()=>navigate("/PendingList")}>
-            <PendingIcon/>
-          </Fab>
-
-    {/* Drafts */}
-          <Fab color='primary'  onClick={()=>navigate("/DraftList")}  >
-            <DraftsIcon/>
-          </Fab>
-
-        </Stack>    
-
-      </Grid>   
+  
 
 
 {/* Table */}

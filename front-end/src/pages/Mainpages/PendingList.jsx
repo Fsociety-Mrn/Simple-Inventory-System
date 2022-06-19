@@ -20,6 +20,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { useNavigate } from 'react-router-dom'
 
+
 const PendingList = () => {
 
 // Intialize Variables
@@ -31,7 +32,7 @@ const [title,setTitle] = useState('Order')
 const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
 const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
-
+const [stat, setStat] = useState("")
 // Column header
 const columns = [
   // name Column
@@ -172,7 +173,7 @@ useEffect(()=>{
         
       }
     )
-},[])
+},[usersCollectionRef])
 
 // Routes
 const onClick_addOrder = () =>{
@@ -185,12 +186,6 @@ const handleonClick_Paid = e => {
   navigate("/OrderList")
 }
 
-// All
-const handleonClick_All = e => {
-  e.preventDefault()
-  setTitle('Order')
-  setFiltered('')
-}
 
 // Search data
 const onChange_Search = e => {
@@ -210,10 +205,6 @@ const filtered = () => {
   return rows
 }
 
-// Delete
-const DELETE = (param) => {
-  window.sessionStorage.setItem("key", "value");
-}
 
 // Oncell click
 const onCellClick = (param) => {
@@ -228,6 +219,7 @@ const onCellClick = (param) => {
     // break;
     default: 
     setView(param.row)
+    setStat(param.row.status)
     setOpenview(true)
   }
 }
@@ -245,6 +237,8 @@ const onCellClick = (param) => {
     setOpen={setOpenview}
     open={openView} 
     data={view}
+    setValue={setStat}
+    value={stat}
     />
     {/* Order Added */}
     <SUCCESS_SNACKBAR 

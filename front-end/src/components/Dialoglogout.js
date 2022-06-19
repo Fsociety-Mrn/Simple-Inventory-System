@@ -1,8 +1,8 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, ListItemText, Stack } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Grid, ListItemText, Radio, RadioGroup, Stack } from '@mui/material'
 import { RetrieveDraft } from '../AuthenticationCRUD/CRUD_firebase'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {logout} from '../AuthenticationCRUD/firebase'
-import {Create_archive , Retrieve_From_archive , deleteArchive} from '../AuthenticationCRUD/CRUD_firebase'
+import {Create_archive , Retrieve_From_archive , updateStatus_Order} from '../AuthenticationCRUD/CRUD_firebase'
 
 // Icons
 import EditIcon from '@mui/icons-material/Edit';
@@ -276,7 +276,7 @@ return(
 // for order details
 export let dataExports = {}
 
-export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
+export const OrderViewDialog = ({setOpen, open=false , data={} , value, setValue } ) => {
 
   const purchase =  data.purchase?.split(',')
   const Quantity =  data.Quantity?.split(',')
@@ -284,13 +284,21 @@ export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
   dataExports = data
   let navigate = useNavigate(); //Naviagte
 
+  // const [value, setValue] = useState(stat);
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    updateStatus_Order({
+      status: event.target.value
+    }, data.id)
+  };
+
   return(
     <>
     
     <Dialog
     open={open}
     scroll='paper'
- 
     onClose={()=>setOpen(false)}
     >
 
@@ -333,7 +341,24 @@ export const OrderViewDialog = ({setOpen, open=false , data={}}) => {
 
         {/* Payment Status */}
         <DialogContentText variant='h6' color='black'>
-          Payment Status: <strong> {data.status} </strong>   
+          Payment Status: <strong> {value} </strong>  
+
+             <FormControl>
+              {/* <FormLabel id="demo-controlled-radio-buttons-group">Gender</FormLabel> */}
+              <RadioGroup
+              row
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="row-radio-buttons-group"
+              value={value}
+              onChange={handleChange}
+              >
+                <FormControlLabel value="Paid" control={<Radio />} label="Paid" />
+                <FormControlLabel value="Pending" control={<Radio  />} label="Pending" />
+                <FormControlLabel value="Canceled" control={<Radio   />} label="Canceled" />
+                <FormControlLabel value="Delivered" control={<Radio />} label="Delivered" />
+              </RadioGroup>
+            </FormControl>
+
         </DialogContentText>
 
         {/* Mode Of Payment */}

@@ -183,6 +183,20 @@ export const updateOrder = async (data) =>{
 
 }
 
+export const updateStatus_Order = async (status , id) => {
+    try{
+        const useDoc = doc(db, "Order" , id)
+        const updates = async () => {
+            await updateDoc(useDoc,status)
+        }
+        updates()
+        console.log("yehey nag update")
+    }catch(e){
+        console.log(e)
+        console.log("Awts di nag update ng status")
+    }
+}
+
 
 // Delete
 

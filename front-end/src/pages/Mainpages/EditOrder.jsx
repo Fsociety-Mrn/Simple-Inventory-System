@@ -106,7 +106,7 @@ useEffect(()=>{
     setPurchase([...purchase,{
       'Product_name' : "",
       'Product_Quantity': 0,
-      'Description' : "",
+      'Description' : "None",
       'total_payment' : 0
     }])
   }

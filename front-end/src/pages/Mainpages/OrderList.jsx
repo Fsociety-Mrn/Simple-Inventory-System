@@ -32,6 +32,7 @@ const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
 const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
 const [retrieveSuccess, setRetrievesuccess] = useState(window.sessionStorage.getItem("key_draft"))
+const [stat, setStat] = useState("")
 
 // Column header
 const columns = [
@@ -172,7 +173,7 @@ useEffect(()=>{
         )
       }
     )
-},[])
+},[usersCollectionRef])
 
 // Routes
 const onClick_addOrder = () =>{
@@ -211,10 +212,6 @@ const filtered = () => {
   return rows
 }
 
-// Delete
-const DELETE = (param) => {
-  window.sessionStorage.setItem("key", "value");
-}
 
 // Oncell click
 const onCellClick = (param) => {
@@ -229,6 +226,7 @@ const onCellClick = (param) => {
     // break;
     default: 
     setView(param.row)
+    setStat(param.row.status)
     setOpenview(true)
   }
 }
@@ -246,6 +244,8 @@ const onCellClick = (param) => {
     setOpen={setOpenview}
     open={openView} 
     data={view}
+    setValue={setStat}
+    value={stat}
     />
     {/* Order Added */}
     <SUCCESS_SNACKBAR 

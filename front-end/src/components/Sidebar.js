@@ -90,9 +90,16 @@ const routeCanceledList = e =>{
 
 }
 
+// Draft List
 const routeDraftList = e =>{
   e.preventDefault()
   navigate("/DraftList") 
+}
+
+// Invoices List
+const routeInvoices = e =>{
+  e.preventDefault()
+  navigate("/Invoices") 
 }
   return (
     <div>    
@@ -243,7 +250,7 @@ const routeDraftList = e =>{
           </Grid> 
 
           {/* Invoices*/}       
-          <ListItemButton onClick={routeCanceledList}>
+          <ListItemButton onClick={routeInvoices}>
             <ListItemIcon> 
               <DescriptionIcon fontSize="medium" />
             </ListItemIcon>

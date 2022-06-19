@@ -56,7 +56,8 @@ const [ category , setCategory] = useState([])
 // fetch data
 useEffect(()=>{
 
-  // 
+  let quota = true
+  if (quota){
       getDocs(usersCollectionRef).then(
       snapshop=>{
         setData(
@@ -73,6 +74,8 @@ useEffect(()=>{
         )
       }
     )
+  }
+  return ()=> quota = false
 },[])
 
 // Close success

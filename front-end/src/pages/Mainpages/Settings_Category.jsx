@@ -54,6 +54,8 @@ let navigate = useNavigate(); //Naviagte
 React.useEffect(()=>{
 
     // const aoc = () => {
+        let quota = true
+        if (quota){
         getDocs(usersCollectionRef).then(
         snapshop=>{
             setCategory(
@@ -64,8 +66,8 @@ React.useEffect(()=>{
 
      
     // }
-    
-  //  return aoc()
+        }
+  return ()=> quota = false
   },[])
 
 // route to add product

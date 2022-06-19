@@ -76,6 +76,9 @@ const AddOrder = () => {
 // Get Product data
 useEffect(()=>{
   success_added = false
+  let quota = true
+  if (quota){
+
   // const aoc = () => {
       getDocs(usersCollectionRef)
       .then(
@@ -85,9 +88,11 @@ useEffect(()=>{
         )
       }
     )
+        
+  }
   // }
   
-//  return aoc()
+ return ()=> quota = false
 },[])
 
 
@@ -164,7 +169,7 @@ const handleChange_ProQuan = async(key,e) =>{
   // date
   const handleChange = (newValue) => {
     setValue(newValue);
-    setOrder({...Order,date: String(moment(newValue,"mm-dd-yyyy").format().split('T')[0]) })
+    setOrder({...Order,date: String(newValue) })
   };
 
   // Mode

@@ -165,12 +165,16 @@ let navigate = useNavigate(); //Naviagte
 
 // fetch data
 useEffect(()=>{
+  let quota = true
+  if (quota){
       getDocs(usersCollectionRef).then(
       snapshop=>{
         const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
         setRows(data?.filter(e=>e.status === "Canceled"))      
       }
     )
+  }
+  return ()=> quota = false
 },[usersCollectionRef])
 
 // Routes

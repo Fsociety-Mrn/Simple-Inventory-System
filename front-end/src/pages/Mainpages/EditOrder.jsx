@@ -86,6 +86,8 @@ const EditOrder = () => {
 
 // Get Product data
 useEffect(()=>{
+  let quota = true
+  if (quota){
       getDocs(usersCollectionRef)
       .then(
       snapshop=>{
@@ -94,7 +96,8 @@ useEffect(()=>{
         )
       }
     )
-
+  }
+  return ()=> quota = false
 },[])
 
 

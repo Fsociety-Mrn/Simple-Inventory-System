@@ -276,6 +276,7 @@ return(
 // for order details
 export let dataExports = {}
 
+// Orderlist view dailoag
 export const OrderViewDialog = ({setOpen, open=false , data={} , value, setValue } ) => {
 
   const purchase =  data.purchase?.split(',')
@@ -465,6 +466,7 @@ export const OrderViewDialog = ({setOpen, open=false , data={} , value, setValue
   )
 }
 
+// Draft Dialog
 export const DraftViewDialog = ({setOpen, open=false , data={}}) => {
 
   const purchase =  data.purchase?.split(',')
@@ -622,6 +624,194 @@ export const DraftViewDialog = ({setOpen, open=false , data={}}) => {
         } 
         >
           Retrieve Product
+        </Button>
+
+      </DialogActions>
+    </Dialog>  
+    </>
+  )
+}
+
+// Invoices view dailoag
+export const InvoicesViewDialog = ({setOpen, open=false , data={} , value, setValue } ) => {
+
+  const purchase =  data.purchase?.split(',')
+  const Quantity =  data.Quantity?.split(',')
+  const Description =  data.Description?.split(',')
+  dataExports = data
+  let navigate = useNavigate(); //Naviagte
+
+  // const [value, setValue] = useState(stat);
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    updateStatus_Order({
+      status: event.target.value
+    }, data.id)
+  };
+
+  return(
+    <>
+    
+    <Dialog
+    open={open}
+    scroll='paper'
+    onClose={()=>setOpen(false)}
+    >
+
+      {/* Customer Name */}
+      <DialogTitle
+      onClick={()=>setOpen(false)}
+      variant='h5' color='black' style={{
+        backgroundColor: '#FAEBCD'
+      }} >
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          >
+            {data.name}
+          </Stack>
+
+      </DialogTitle>
+
+      <DialogContent style={{
+        backgroundColor: '#FAEBCD'
+      }}
+      onClick={()=>setOpen(false)}
+      >
+        {/* Email */}
+        <DialogContentText variant='h6' color='black'>
+          Email: <strong>{data.email}</strong>
+        </DialogContentText>
+
+        {/* Location */}
+        <DialogContentText variant='h6' color='black'>
+          Location:  {data.location} 
+        </DialogContentText>
+
+        {/* Date */}      
+        <DialogContentText variant='h6'  color='black'>
+          Date: {data.date}       
+        </DialogContentText>
+
+        {/* Payment Status */}
+        <DialogContentText variant='h6' color='black'>
+          Payment Status: <strong> {value} </strong>  
+            <Grid container>
+             <FormControl>
+              {/* <FormLabel id="demo-controlled-radio-buttons-group">Gender</FormLabel> */}
+              <RadioGroup
+              row
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="row-radio-buttons-group"
+              value={value}
+              onChange={handleChange}
+              >
+                <FormControlLabel value="Delivered" control={<Radio />} label="Delivered" />
+                <FormControlLabel value="Refunded" control={<Radio />} label="Refunded" />
+              </RadioGroup>
+            </FormControl>
+            </Grid>
+        </DialogContentText>
+
+        {/* Mode Of Payment */}
+        <DialogContentText variant='h6' color='black'>
+          Mode Of Payment: {data.Mode} 
+        </DialogContentText>
+
+        <DialogContentText color='black'>
+          <Divider />
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          >
+
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Purchase
+              </ListItemText>
+              {purchase?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+             
+            </Stack>
+    
+            {/* Purchase item */}
+            <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Description
+              </ListItemText>
+              {Description?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+            {/* Quantity */}
+            <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={1}
+            >
+              <ListItemText>
+                Quantity
+              </ListItemText>
+              {Quantity?.map((e,i)=>(
+                <ListItemText key={i}>
+                  {e}
+                </ListItemText>
+              ))}
+            </Stack>
+
+          </Stack>
+          <br/>
+          <Divider />
+        </DialogContentText>
+
+        {/* Total Payment */}
+        <DialogContentText variant='h6'  padding={1} color='black'>
+          Total Payment: <strong> {data.TotalPayment} </strong>
+        </DialogContentText>
+      </DialogContent>
+
+
+
+      <DialogActions 
+      style={{
+        backgroundColor: '#FAEBCD',
+          }}>
+
+        <Button  
+        variant='contained'
+        startIcon={<DriveFileMoveIcon/>}
+        size='medium'
+        autoFocus 
+        onClick={()=>
+          {
+            navigate('/EditOrder')
+          }
+        } 
+        >
+          Edit Product
         </Button>
 
       </DialogActions>

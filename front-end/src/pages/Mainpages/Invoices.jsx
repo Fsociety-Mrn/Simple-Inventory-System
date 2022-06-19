@@ -1,24 +1,32 @@
 // Components
-import { Divider, Fab, Grid, IconButton, InputAdornment, Paper, Stack, Typography } from '@mui/material'
+import { 
+  Autocomplete,
+  Button,
+  Divider, 
+  Fab, 
+  FormControl, 
+  FormControlLabel, 
+  Grid, 
+  InputAdornment, 
+  Radio, 
+  RadioGroup, 
+  Stack, 
+  Typography 
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { SUCCESS_SNACKBAR } from '../../components/SnackbarAlert'
-import { success_added } from './AddOrder'
 import { Custom_Textfield } from '../../components/Textfield'
 import { DataGrid } from '@mui/x-data-grid';
 import { db } from '../../AuthenticationCRUD/firebase'
 import { collection, getDocs } from "firebase/firestore";
-import { OrderViewDialog } from '../../components/Dialoglogout'
+import { InvoicesViewDialog } from '../../components/Dialoglogout'
 
 
 // Icons or Images
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import PendingIcon from '@mui/icons-material/Pending';
-import CancelIcon from '@mui/icons-material/Cancel';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment';
 
 const PendingList = () => {
 
@@ -27,11 +35,81 @@ const [orderSuccess,setOrderSucces] = useState(window.sessionStorage.getItem("ad
 const usersCollectionRef = collection(db, "Order"); // database
 const [search,setSearch] = useState() //search 
 const [filter,setFiltered] = useState() //filtered
-const [title,setTitle] = useState('Order')
 const [view,setView] = useState()
 const [openView, setOpenview] = useState(false)
 const [deleteSuccess, setDeletesuccess] = useState(window.sessionStorage.getItem("delete"))
 const [stat, setStat] = useState("")
+const Months = 
+[ 
+  "01",
+  "02", 
+  "03", 
+  "04", 
+  "05", 
+  "06", 
+  "07", 
+  "08", 
+  "09", 
+  "10", 
+  "11", 
+  "12"
+];
+const Years = 
+[ 
+  "2020", 
+  "2021", 
+  "2022", 
+  "2023", 
+  "2024", 
+  "2025", 
+  "2026", 
+  "2027", 
+  "2028", 
+  "2029", 
+  "2030", 
+  "2031"
+];
+const Days = 
+[ 
+  "01", 
+  "02", 
+  "03", 
+  "04", 
+  "05", 
+  "06", 
+  "07", 
+  "08", 
+  "09", 
+  "10", 
+  "11", 
+  "12", 
+  "13", 
+  "14", 
+  "15", 
+  "16", 
+  "17", 
+  "18", 
+  "19", 
+  "20", 
+  "21", 
+  "22", 
+  "23", 
+  "24", 
+  "25", 
+  "26", 
+  "27", 
+  "28", 
+  "29", 
+  "30", 
+  "31"
+];
+const [dates, setDates] = useState({
+  'Month': "",
+  'Day' : "",
+  'Years': ""
+})
+
+
 
 // Column header
 const columns = [
@@ -165,12 +243,22 @@ let navigate = useNavigate(); //Naviagte
 
 // fetch data
 useEffect(()=>{
+  let quota = true
+  if (quota){
       getDocs(usersCollectionRef).then(
       snapshop=>{
         const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
-        setRows(data?.filter(e=>e.status === "Canceled"))      
+
+        setRows(data?.filter(e=>
+          {if (e.status === "Delivered" || e.status === "Refunded") return true
+          if (e.status !== "Delivered" || e.status !== "Refunded") return true
+        } 
+          
+        ))      
       }
     )
+  }
+  return ()=> quota = false
 },[usersCollectionRef])
 
 
@@ -182,15 +270,61 @@ const onChange_Search = e => {
 
 // filter seacrh
 const search_data = () => {
-  if (search) return filtered()?.filter(e=>e.name.replace(' ','').toLowerCase().includes(search.replace(' ','').toLowerCase()))
-  return filtered()
+  if (search) return filter_date()?.filter(e=>e.name.replace(' ','').toLowerCase().includes(search.replace(' ','').toLowerCase()))
+  return filter_date()
 }
+
 
 // Filter
 const filtered = () => {
 
-  if(filter)return rows?.filter(e=>e.status === filter)
+  if(filter) {
+    return rows?.filter(e=>{
+      if (e.status === filter) return true
+    }
+    )
+  
+  }
   return rows
+}
+
+const filter_date = () => {
+ const datess = dates.Years + dates.Month + dates.Day
+ console.log(datess)
+ console.log(
+  filtered()?.
+  map(
+    e=>
+    String(
+      moment(new Date(e.date),"mm-dd-yyyy").format().split('T')[0]
+    ).replaceAll("-",""))
+
+ )
+ if (!datess) return filtered()
+
+  return filtered()?.
+  filter(
+    e=>
+    String(
+      moment(new Date(e.date),"mm-dd-yyyy").format().split('T')[0]
+    ).replaceAll("-","").includes(datess))
+
+}
+
+const changeMonth = (neVal) => {
+  neVal ? setDates({...dates, Month: neVal}) : setDates({...dates, Month: ""})
+}
+const changeDay = (neVal) => {
+  neVal ? setDates({...dates, Day: neVal}) : setDates({...dates, Day: ""})
+}
+const changeYears = (neVal) => {
+  neVal ? setDates({...dates, Years: neVal}) : setDates({...dates, Years: ""})
+}
+
+
+// setFiltered
+const handleChange = (e) => {
+  setFiltered(e.target.value)
 }
 
 // Oncell click
@@ -220,7 +354,7 @@ const onCellClick = (param) => {
     <br/>
     <br/>
     {/* dialog */}
-    <OrderViewDialog 
+    <InvoicesViewDialog 
     setOpen={setOpenview}
     open={openView} 
     data={view}
@@ -257,6 +391,9 @@ const onCellClick = (param) => {
         <Typography 
         variant='h3'>Invoices</Typography> 
         <Divider />
+        <Button onClick={filter_date}>
+          click me
+        </Button>
       </Grid>
 
 
@@ -289,19 +426,101 @@ const onCellClick = (param) => {
 </Stack>
       </Grid>
 
-    {/* Date */}
-      <Grid item xs={12} md={12}>
+
+      <Grid item xs={12} md={11}>
+      <Grid 
+      container 
+      spacing={1}
+      direction="row"
+      justifyContent="flex-start"
+      alignItems="center"
+      >
      
+        {/* status */}
+        <Grid item xs={12}>
+          <FormControl>
+           <RadioGroup
+            row
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="row-radio-buttons-group"
+            value={filter}
+            onChange={handleChange}
+            >
+              <FormControlLabel value=""  control={<Radio />} label="All" />
+              <FormControlLabel value="Delivered" control={<Radio />} label="Delivered" />
+              <FormControlLabel value="Refunded" control={<Radio />} label="Refunded" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
 
 
+         {/* Date */}
+         <Grid item xs={12} md={4} sm={12}>
+          <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+          >
+
+          {/* Year */}
+          <Autocomplete
+          fullWidth
+          name="searchYear"
+          value={dates.Years}
+          onChange={(event, newValue) => changeYears(newValue)}     
+          options={Years}
+          renderInput={(params) => 
+          <Custom_Textfield 
+           
+          value={dates.Years} 
+          {...params} 
+          label="Years" />
+          }
+          />
+
+          {/* Month */}
+          <Autocomplete
+
+          name="searchYear"
+          value={dates.Month}
+          onChange={(event, newValue) => changeMonth(newValue)}     
+          options={Months}
+          renderInput={(params) => 
+          <Custom_Textfield 
+          fullWidth 
+          {...params} 
+          label="Month" />
+          }
+          />
+
+          {/* Day */}
+          <Autocomplete
+
+          name="searchYear"
+          value={dates.Day}
+          onChange={(event, newValue) => changeDay(newValue)}     
+          options={Days}
+          renderInput={(params) => 
+          <Custom_Textfield 
+          fullWidth 
+          // value={dates.Day} 
+          {...params} 
+          label="Day" />
+          }
+          />
+
+
+
+          </Stack>
+        </Grid>
+      </Grid>
 
       </Grid>
 
-  
-
 
 {/* Table */}
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12} md={10.5}>
         <Grid container 
         style={{
           width: '100%',

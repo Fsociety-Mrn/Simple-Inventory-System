@@ -172,7 +172,8 @@ const uploadImage = e => {
 
 // Read data
 useEffect(()=>{
-
+    let quota = true
+    if (quota){
     getDocs(usersCollectionRef).then(
     snapshop=>{
         setCategory(
@@ -180,8 +181,11 @@ useEffect(()=>{
       )
     }
   )
+}
 
-},[])
+return ()=> quota = false
+
+},[usersCollectionRef])
 
 // Name
 const onChange_name = e => {

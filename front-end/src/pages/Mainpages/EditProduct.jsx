@@ -160,7 +160,8 @@ const uploadImage = e => {
 
 // Read data
 React.useEffect(()=>{
-
+    let quota = true
+    if (quota){
     getDocs(usersCollectionRef).then(
     snapshop=>{
         setCategory(
@@ -168,7 +169,8 @@ React.useEffect(()=>{
       )
     }
   )
-
+}
+return ()=> quota = false
 },[])
 
 // Name

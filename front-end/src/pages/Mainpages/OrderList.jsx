@@ -166,6 +166,8 @@ let navigate = useNavigate(); //Naviagte
 
 // fetch data
 useEffect(()=>{
+  let quota = true
+  if (quota){
       getDocs(usersCollectionRef).then(
       snapshop=>{
         setRows(     
@@ -173,6 +175,8 @@ useEffect(()=>{
         )
       }
     )
+  }
+  return ()=> quota = false
 },[usersCollectionRef])
 
 // Routes

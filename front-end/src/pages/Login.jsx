@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // Authentication
-import { login } from '../AuthenticationCRUD/firebase'
+import { login , auth} from '../AuthenticationCRUD/firebase'
 
 
 // Components
@@ -48,10 +48,10 @@ const password_change = e => {
   e.preventDefault()
 
   try{
-    login(Login_details.username, Login_details.password );
-   setError(false)
- }catch(err)
- {
+    login(Login_details.username, Login_details.password)
+    setError(false)
+  }catch(err)
+ {  
    console.log(err)
    setError(true)
  }

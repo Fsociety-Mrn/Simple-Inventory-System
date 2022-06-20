@@ -284,8 +284,9 @@ useEffect(()=>{
         const data = snapshop.docs.map(doc=>(({...doc.data(), id: doc.id})))
 
         setRows(data?.filter(e=>
-          {if (e.status === "Delivered" || e.status === "Refunded") return true
-          if (e.status !== "Delivered" || e.status !== "Refunded") return true
+          {
+            if (e.status === "Delivered" || e.status === "Refunded") return true
+            if (e.status !== "Delivered" || e.status !== "Refunded") return false
         } 
           
         ))      
@@ -477,7 +478,7 @@ const onCellClick = (param) => {
         </Grid>
         
          {/* Year */}
-        <Grid item xs={12} md={2} sm={4}>
+        <Grid item xs={12} md={2} sm={2.1}>
          <Autocomplete
           fullWidth
           name="searchYear"
@@ -494,7 +495,7 @@ const onCellClick = (param) => {
         </Grid>
 
           {/* Month */}
-        <Grid item xs={12} md={2} sm={1}>
+        <Grid item xs={12} md={2} sm={2}>
           <Autocomplete
           name="searchYear"
           value={dates.Month}
@@ -509,7 +510,7 @@ const onCellClick = (param) => {
           />
         </Grid>
 
-        <Grid item xs={12} md={2} sm={1}>
+        <Grid item xs={12} md={2} sm={2}>
 
           {/* Day */}
           <Autocomplete
@@ -535,7 +536,7 @@ const onCellClick = (param) => {
               filename={"LAClothingCustomerDetails-" + String(moment(new Date(),"mm-dd-yyyy").format().split('T')[0]) + ".csv"}
               style={{ textDecoration: "none", color: "#fff" }}
               > 
-              Export data to PDF
+              Export data to excel
               </CSVLink>  
           </Button>
         </Grid>

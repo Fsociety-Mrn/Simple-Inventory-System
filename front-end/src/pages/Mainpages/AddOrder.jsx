@@ -110,7 +110,6 @@ useEffect(()=>{
   }
 
 // Delete Button
-
   const handleClick_DELPro = e => {
     const list = [...purchase]
     const index = list?.map((key,e)=>e).indexOf(parseInt(e.currentTarget.value))
@@ -271,7 +270,6 @@ const handleChange_ProQuan = async(key,e) =>{
     paddingLeft={2}
     paddingBottom={5}
     spacing={2}
-    
     >
 
 {/* Add Order */}

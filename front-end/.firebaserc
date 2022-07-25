@@ -4,7 +4,9 @@
     "mern": "mern-stack-7cc72",
     "laclothing": "laclothing-78c1f",
     "mern-stack": "mern-stack-7cc72",
-    "backup": "mern-stack-backup"
+    "backup": "mern-stack-backup",
+    "PLEASE": "mern-stack-backup"
   },
-  "targets": {}
+  "targets": {},
+  "etags": {}
 }

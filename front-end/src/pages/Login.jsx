@@ -99,7 +99,6 @@ const handleClose = () => {
             border: "3px solid #434343",
             borderRadius: 3
           }}
-
             padding={2}
             spacing={1}
           >

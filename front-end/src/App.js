@@ -25,15 +25,14 @@ import {
 } from "react-router-dom";
 import Appbar from './components/Appbar';
 import { AuthProvider } from './AuthenticationCRUD/Authentication'
-import { Privateroute , NotPrivateroute} from './AuthenticationCRUD/Privateroute';
+import { Privateroute } from './AuthenticationCRUD/Privateroute';
 import { useAuth } from './AuthenticationCRUD/firebase'
-import { useState } from 'react';
+import Homepage from './Homepage/Homepage'
 
 
 
 
 function App() {
-  const [rout,setRout] = useState()
   const authens = useAuth()
 
   const Routa = () => {
@@ -63,7 +62,7 @@ function App() {
       {/* <Route element={<Routa/>}> */}
         <Route path="/Login" element={authens ?<Navigate to="/Homepage"/> : <Login/> }/>
         <Route path="/Sendemail" element={authens ?<Navigate to="/Homepage"/> : <SendEmail/>}/>
-        <Route path="*" element={authens ?<Navigate to="/Homepage"/> : <Navigate to="/Login"/>}/>
+        <Route path="/Laclothingpage" element={<Homepage/>}/>
       {/* </Route> */}
         
 

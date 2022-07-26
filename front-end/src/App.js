@@ -28,9 +28,9 @@ import { AuthProvider } from './AuthenticationCRUD/Authentication'
 import { Privateroute } from './AuthenticationCRUD/Privateroute';
 import { useAuth } from './AuthenticationCRUD/firebase'
 import Homepage from './Homepage/Homepage'
+import NotFoud from './NotFoud'
 
-
-
+import Footer from './Homepage/Footer'
 
 function App() {
   const authens = useAuth()
@@ -63,11 +63,12 @@ function App() {
         <Route path="/Login" element={authens ?<Navigate to="/Homepage"/> : <Login/> }/>
         <Route path="/Sendemail" element={authens ?<Navigate to="/Homepage"/> : <SendEmail/>}/>
         <Route path="/Laclothingpage" element={<Homepage/>}/>
+        <Route path="*" element={<NotFoud/>}/>
       {/* </Route> */}
         
 
 {/* my Apbbar */}
-        <Route  element={
+        <Route element={
           <Privateroute>
             <App_sidebar/>
           </Privateroute>
@@ -104,7 +105,7 @@ function App() {
         </Route>
 
       </Routes>
-
+      <Footer/>
 
     </div>
 </AuthProvider>

@@ -64,6 +64,7 @@ function App() {
         <Route path="/Sendemail" element={authens ?<Navigate to="/Homepage"/> : <SendEmail/>}/>
         <Route path="/Laclothingpage" element={<Homepage/>}/>
         <Route path="*" element={<NotFoud/>}/>
+        <Route path="/" element={<Navigate to="/Laclothingpage"/>}/>
       {/* </Route> */}
         
 

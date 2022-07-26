@@ -7,7 +7,8 @@ import {
   TextField, 
   Toolbar, 
   Typography,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material'
 
 import React from 'react'
@@ -18,6 +19,15 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import Body from './Body'
 
 const Homepage = () => {
+//INitialize variable
+const [Search,setSearch] = React.useState() //seacrh
+
+//Initialize functions
+
+const handleOnSeacrh = e =>{
+  setSearch(e.target.value)
+}
+
   return (
     <div
     style={{
@@ -68,7 +78,13 @@ const Homepage = () => {
             
             {/* Search bar */}
             <Grid item xs={12} md={9} sm={12}>
-              <TextField fullWidth placeholder="Search" variant='outlined' style={{
+              <TextField 
+              fullWidth 
+              placeholder="Search" 
+              variant='outlined' 
+              value={Search}
+              onChange={handleOnSeacrh}
+              style={{
                 backgroundColor:"white",
                 borderRadius: '5px'
               }}
@@ -83,15 +99,17 @@ const Homepage = () => {
               alignItems="center"
               >
               {/* info */}
+              <Tooltip title="About Us" placement="bottom">
                 <IconButton style={{ color: "white"}}>
                   <InfoOutlinedIcon/>
                 </IconButton>
-              
+              </Tooltip>
               {/* Help */}
+              <Tooltip title="Need Help?" placement="bottom">
                 <IconButton style={{ color: "white"}}>
                   <HelpOutlineOutlinedIcon/>
                 </IconButton>
-              
+                </Tooltip>
               </Stack>
             </Grid>
 
@@ -102,7 +120,10 @@ const Homepage = () => {
       </AppBar>
 
 
-      <Body/>
+      <Body
+      Search = {Search}
+      setSearch = {setSearch}
+      />
     </div>
   )
 }

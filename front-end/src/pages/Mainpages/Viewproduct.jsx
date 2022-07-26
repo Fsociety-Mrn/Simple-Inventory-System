@@ -48,7 +48,7 @@ const [Title,setTitle] = useState('All') // Title
 const [opens,setOpens] = useState(false) //View Image
 const [dataProduct,setDataProduct] = useState() 
 const [retrieve,setRetrieve] = useState(successRetrieve)
-const [ category , setCategory] = useState([])
+const [category , setCategory] = useState([])
 
 
 // Initiliaze function
@@ -76,7 +76,7 @@ useEffect(()=>{
     )
   }
   return ()=> quota = false
-},[])
+},[usersCollectionRef])
 
 // Close success
 const handleClose = () => {
@@ -119,7 +119,6 @@ const search_product = () => {
 }
 
 // Open dialog
-
 const OpenviewProduct = (item) => {
   setOpens(true)
   setDataProduct(item)

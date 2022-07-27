@@ -133,18 +133,25 @@ const routeInvoices = e =>{
         spacing={2}
         >
 
-          <Grid item md={4}>
+          <Grid item md={4} >
             <Avatar
             src={Bing}
-            sx={{ width: 60, height: 60 }}>
+            sx={{ width: 60, height: 60 }}
+            onClick={e=>navigate("/Laclothingpage")}
+            >
               a
             </Avatar>
           </Grid>
 
 
           <Grid item md={8}>
-            <Typography variant='h6' fontFamily='initial' color="#434343" noWrap  fontSize={15}>
+            <Typography variant='h6' fontFamily='initial' color="#434343" noWrap  fontSize={15}
+            onClick={e=>navigate("/Laclothingpage")}
+            >
               LA Clothing
+            </Typography>
+            <Typography variant='caption' fontFamily='initial' color="#434343" noWrap fontSize={11}>
+              Click this to route client page
             </Typography>
           </Grid>
     
